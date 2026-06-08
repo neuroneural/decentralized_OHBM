@@ -1,0 +1,72 @@
+canvas {
+    display: none;
+}
+.slicer_view {
+    box-shadow: 0px 0px 0px rgba(150, 150, 255, 0.8);
+    clear: both;
+    cursor: crosshair;
+    margin: 0 auto;
+    width: 665px;
+    position: relative;
+}
+
+#mdots_view, #hdp_view {
+    clear: both;
+    box-shadow: 0px 0px 0px rgb(61, 102, 137);
+    display: none;
+    overflow: hidden;
+    width: 100% ;
+}
+
+#mdots_view {
+    height: 280px;
+ }
+#hdp {
+    float: right;
+    margin-right: 30px;
+}
+
+#data_gui_hdp {
+    float: left;
+    position: relative;
+    left: 10px;
+    top: 10px;
+    z-index: 6;
+    font-size:0.5em;
+}
+
+#sz {
+    position: relative;
+    z-index: 5;
+}
+
+#data_gui_sz {
+    float: right;
+    position: relative;
+    right: 15px;
+    top: -250px;
+    z-index: 6;
+}
+
+#content {
+float: right;
+width:660px;
+}
+
+#leftcol {
+float: left;
+width: 300px;
+text-align: "left";
+}
+
+.col_1_2 {
+float: left;
+width:50%;
+text-align: "right";
+}
+
+.col_2_2 {
+float: right;
+width: 50%;
+text-align: "left";
+}

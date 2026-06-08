@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link href="css/fontawesome-free-6.2.1-web/css/all.css" rel="stylesheet">
+
+  <script src="lib/colorbrewer.v1.min.js" charset="utf-8"></script>
+  <script src="lib/colorStringStandalone.js" charset="utf-8"></script>
+  <script type="text/javascript" src="lib/jquery-2.2.4.min.js"></script>
+  <!-- Load d3.js -->
+  <script src="https://d3js.org/d3.v7.js"></script>
+
+  <title>State of the Art and Future of Federated Learning in Neuroimaging</title>
+
+  <meta name="description" content="A presentation about federated learning in neuroimaging">
+  <meta name="author" content="Sergey M Plis">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <!-- Code syntax highlighting -->
+  <link rel="stylesheet" href="plugin/highlight/atom-one-light.css" id="highlight-theme">
+  <!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+  <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="dist/theme/aml.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.scss';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  </script>
+
+
+</head>
+
+
+<body>
+  <div class="reveal">
+    <!-- In between the <div="reveal"> and the <div class="slides"> -->
+<div class="slides">
+      <!-- 1. Title Slide -->
+      <section>
+        <h2 style="color: #000000; text-transform: none;">State of the Art and Future of Federated Learning in Neuroimaging</h2>
+        <div style="color: #000000; margin-top: 30px; font-size: 24px;">
+          Sergey Plis
+        </div>
+        <p style="margin-top: 30px;">
+          <img style="border:0; box-shadow: none;" height="80" src="figures/GSU.png" alt="GSU">
+          <img style="border:0; box-shadow: none; margin: 0 20px;" height="80" src="figures/TReNDS_logo_light.png" alt="TReNDS">
+          <img style="border:0; box-shadow: none;" height="80" src="figures/neuroneural_logo.png" alt="Neuroneural">
+        </p>
+      </section>
+</div>
+
+  </div>
+
+  <script src="dist/reveal.js"></script>
+
+  <link rel="stylesheet" href="plugin/highlight/atom-one-light.css">
+  <script src="plugin/highlight/highlight.js"></script>
+  <script src="plugin/math/math.js"></script>
+  <script src="plugin/chalkboard/plugin.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/zoom/zoom.js"></script>
+  <script src="plugin/fullscreen/fullscreen.js"></script>
+  <script src="plugin/verticator/verticator.js"></script>
+  <script src="plugin/verticator/verticator.js"></script>
+  <link rel="stylesheet" href="plugin/verticator/verticator.css">
+  <script src="plugin/menu/menu.js"></script>
+
+  <script>
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+
+    Reveal.initialize({
+      // history: true,
+      hash: true,
+      margin: 0.01,
+      minScale: 0.01,
+      maxScale: 2,
+      center: true,
+
+      controls: false,
+      keyboard: true,
+
+      overview: true,
+      transition: 'slide', // Transition style: none/fade/slide/convex/concave/zoom
+      transitionSpeed: 'fast', // Transition speed: default/fast/slow
+      menu: {
+        themes: false,
+        openSlideNumber: true,
+        openButton: false,
+      },
+
+      chalkboard: {
+        boardmarkerWidth: 1,
+        chalkWidth: 2,
+        chalkEffect: 1,
+        toggleNotesButton: false,
+        toggleChalkboardButton: false,
+        slideWidth: Reveal.width,
+        slideHeight: Reveal.height,
+        // src: "chalkboards/chalkboard_em2.json",
+        readOnly: false,
+        theme: "blackboard",
+        eraser: { src: "plugin/chalkboard/img/sponge.png", radius: 30 },
+      },
+
+      math: {
+        mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+        config: 'TeX-AMS_SVG-full',
+        // pass other options into `MathJax.Hub.Config()`
+        TeX: {
+          Macros: {
+            RR: '\\mathbb{R}',
+            PP: '\\mathbb{P}',
+            EE: '\\mathbb{E}',
+            NN: '\\mathbb{N}',
+            vth: '\\vec{\\theta}',
+            loss: '{\\cal l}',
+            hclass: '{\\cal H}',
+            CD: '{\\cal D}',
+            def: '\\stackrel{\\text{def}}{=}',
+            pag: ['\\text{pa}_{{\\cal G}^{#1}}(#2)}', 2],
+            vec: ['\\boldsymbol{\\mathbf #1}', 1],
+            set: ['\\left\\{#1 \\; : \\; #2\\right\\}', 2],
+            bm: ['\\boldsymbol{\\mathbf #1}', 1],
+            argmin: ['\\operatorname\{arg\\,min\\,\}'],
+            argmax: ['\\operatorname\{arg\\,max\\,\}'],
+            softmax: ['\\operatorname\{soft\\,max\\,\}'],
+            prob: ["\\mbox{#1$\\left(#2\\right)$}", 2],
+          },
+          loader: { load: ['[tex]/color'] },
+          extensions: ["color.js"],
+          tex: { packages: { '[+]': ['color'] } },
+          svg: {
+            fontCache: 'global'
+          }
+        }
+      },
+
+      plugins: [Verticator, RevealMath, RevealChalkboard, RevealHighlight, RevealNotes, RevealZoom, RevealMenu],
+
+    });
+
+    Reveal.configure({ fragments: true }); // set false when developing to see everything at once
+    Reveal.configure({ slideNumber: true });
+    //Reveal.configure({ history: true });
+    Reveal.configure({ slideNumber: 'c / t' });
+    Reveal.addEventListener('darkside', function () {
+      document.getElementById('theme').setAttribute('href', 'dist/theme/aml_dark.css');
+    }, false);
+    Reveal.addEventListener('brightside', function () {
+      document.getElementById('theme').setAttribute('href', 'dist/theme/aml.css');
+    }, false);
+
+    // Listen for a fragment being shown
+    Reveal.addEventListener('fragmentshown', function (event) {
+      // Find all slides
+      const allSlides = document.querySelectorAll('.slide');
+
+      // Remove 'dim-background' from all slides first to ensure only the current slide is dimmed
+      allSlides.forEach(slide => slide.classList.remove('dim-background'));
+
+      // Find the closest ancestor slide of the shown fragment
+      const currentSlide = Reveal.getCurrentSlide();
+      // Check if the currentSlide has the 'special-dim' class
+      if (currentSlide && currentSlide.getAttribute('data-state')) {
+        console.log('target: ', currentSlide.getAttribute('data-state')); // Should be 'dimmed-slide' for this slide
+        const toModify = event.fragment.closest('.slide');
+        toModify.classList.add('dim-background');
+        currentSlide.classList.add('dim-background');
+      }
+    });
+
+    // Listen for a fragment being hidden and slide changes to remove the dimming effect where applicable
+    ['fragmenthidden', 'slidechanged'].forEach(eventType => {
+      Reveal.addEventListener(eventType, function () {
+        // Find all slides and remove 'dim-background' class
+        const slides = document.querySelectorAll('.slide');
+        slides.forEach(slide => slide.classList.remove('dim-background'));
+      });
+    });
+
+
+
+  </script>
+
+  <style type="text/css">
+    /* 1. Style header/footer <div> so they are positioned as desired. */
+    #header-left {
+      position: absolute;
+      top: 0%;
+      left: 0%;
+    }
+
+    #header-right {
+      position: absolute;
+      top: 0%;
+      right: 0%;
+    }
+
+    #footer-left {
+      position: absolute;
+      bottom: 0%;
+      left: 0%;
+    }
+  </style>
+
+  <!-- // 2. Create hidden header/footer -->
+  <div id="hidden" style="display:none;">
+    <div id="header">
+      <div id="header-left">
+        <img style="border:0; box-shadow: 0px 0px 0px
+			      rgba(150, 150, 255,0.8);" width="150" src="figures/BRAINCHOP.png" alt="brainchop">
+      </div>
+      <div id="header-right">
+        <img style="border:0; box-shadow: 0px 0px 0px
+			      rgba(150, 150, 255,0.8);" width="250" src="figures/TReNDS_logo_light.png" alt="TReNDS">
+        <!-- <img style="border:0; box-shadow: 0px 0px 0px -->
+        <!--             rgba(150, 150, 255, 0.8);" -->
+        <!--      width="100" -->
+        <!--      src="figures/neuroneural_logo.png" -->
+        <!--      alt="Neuroneural"> -->
+      </div>
+      <div id="footer-left">
+      </div>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+    // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+    var header = $('#header').html();
+    if (window.location.search.match(/print-pdf/gi)) {
+      Reveal.addEventListener('ready', function (event) {
+        $('.slide-background').append(header);
+      });
+    }
+    else {
+      $('div.reveal').append(header);
+    }
+
+  </script>
+
+</body>
+
+</html>

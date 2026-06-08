@@ -1,0 +1,114 @@
+.row {
+    display: flex;
+    width: 100%;
+    margin:0 auto;
+    overflow:hidden;
+}
+.col80 {
+    width: 85%;
+    overflow:hidden;
+}
+.col60 {
+    width: 60%;
+    overflow:hidden;
+}
+.col50 {
+    width: 50%;
+    overflow:hidden;
+}
+.col40 {
+    width: 40%;
+    overflow:hidden;
+}
+.col30 {
+    width: 30%;
+    overflow:hidden;
+}
+.col20 {
+    width: 20%;
+    overflow:hidden;
+}
+
+.col {
+    flex: 1;
+}
+
+row {
+    display: flex;
+    width: 100%;
+    margin:0 auto;
+    overflow:hidden;
+}
+col80 {
+    width: 85%;
+    overflow:hidden;
+}
+col70 {
+    width: 70%;
+    overflow:hidden;
+}
+col60 {
+    width: 60%;
+    overflow:hidden;
+}
+col50 {
+    width: 50%;
+    overflow:hidden;
+}
+col40 {
+    width: 40%;
+    overflow:hidden;
+}
+col30 {
+    width: 30%;
+    overflow:hidden;
+}
+col20 {
+    width: 20%;
+    overflow:hidden;
+}
+col10 {
+    width: 10%;
+    overflow:hidden;
+}
+col {
+    flex: 1;
+}
+alert {
+    color: red;
+}
+
+defhead {
+    background-color: #93a1a1;
+    color: #fdf6e3;
+    font-size: 38px;
+}
+.darker
+{
+    color: red;
+    background-color: #eee8d5;
+}
+
+.banner
+{
+    display: block;
+    width: 100%;
+}
+
+.reveal .footer {
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+  font-size: 0.2em;
+}
+
+.reveal section img { background:none; border:none; box-shadow:none; }
+
+.backgrounds {
+  transition: opacity 0.1s ease; /* Smooth transition for the dimming effect */
+}
+
+.dim-background .backgrounds { /* When the parent or the slide itself has .dim-background class */
+    background: rgba(0, 0, 0, 0.9);    
+    opacity: 0.1; /* Adjust opacity to dim the background */
+}
