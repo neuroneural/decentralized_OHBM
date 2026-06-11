@@ -1,0 +1,347 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Glow filter for regular nodes -->
+    <filter id="nodeGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Strong glow for hub nodes -->
+    <filter id="hubGlow" x="-120%" y="-120%" width="340%" height="340%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Subtle glow for edges -->
+    <filter id="edgeGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Node fills -->
+    <radialGradient id="nodeGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#bfdbfe"/>
+      <stop offset="100%" stop-color="#2563eb" stop-opacity="0.5"/>
+    </radialGradient>
+    <radialGradient id="hubGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e0e7ff"/>
+      <stop offset="100%" stop-color="#4f46e5" stop-opacity="0.6"/>
+    </radialGradient>
+    <radialGradient id="tealGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#99f6e4"/>
+      <stop offset="100%" stop-color="#0d9488" stop-opacity="0.5"/>
+    </radialGradient>
+
+    <!-- Clip to keep rim nodes partially visible -->
+    <mask id="rimMask">
+      <rect width="100%" height="100%" fill="white"/>
+      <circle cx="100" cy="850" fill="black"><animate attributeName="r" values="18;28;18" dur="4.1s" begin="0.1s" repeatCount="indefinite"/></circle>
+      <circle cx="180" cy="1000" fill="black"><animate attributeName="r" values="15;23;15" dur="3.5s" begin="1.2s" repeatCount="indefinite"/></circle>
+      <circle cx="280" cy="780" fill="black"><animate attributeName="r" values="20;30;20" dur="4.8s" begin="0.5s" repeatCount="indefinite"/></circle>
+      <circle cx="350" cy="950" fill="black"><animate attributeName="r" values="16;25;16" dur="3.9s" begin="1.8s" repeatCount="indefinite"/></circle>
+      <circle cx="480" cy="820" fill="black"><animate attributeName="r" values="18;27;18" dur="5.2s" begin="0.8s" repeatCount="indefinite"/></circle>
+      <circle cx="580" cy="1020" fill="black"><animate attributeName="r" values="14;22;14" dur="4.5s" begin="2.1s" repeatCount="indefinite"/></circle>
+      <circle cx="700" cy="900" fill="black"><animate attributeName="r" values="17;26;17" dur="3.7s" begin="0.3s" repeatCount="indefinite"/></circle>
+      <circle cx="150" cy="550" fill="black"><animate attributeName="r" values="16;24;16" dur="4.4s" begin="1.5s" repeatCount="indefinite"/></circle>
+      <circle cx="350" cy="600" fill="black"><animate attributeName="r" values="18;26;18" dur="5.0s" begin="0.7s" repeatCount="indefinite"/></circle>
+      <circle cx="550" cy="650" fill="black"><animate attributeName="r" values="15;22;15" dur="3.8s" begin="2.4s" repeatCount="indefinite"/></circle>
+      <circle cx="850" cy="830" fill="black"><animate attributeName="r" values="22;34;22" dur="4.6s" begin="1.1s" repeatCount="indefinite"/></circle>
+      <circle cx="1150" cy="950" fill="black"><animate attributeName="r" values="15;23;15" dur="3.9s" begin="0.6s" repeatCount="indefinite"/></circle>
+      <circle cx="1450" cy="850" fill="black"><animate attributeName="r" values="16;24;16" dur="5.1s" begin="2.0s" repeatCount="indefinite"/></circle>
+      <circle cx="1750" cy="950" fill="black"><animate attributeName="r" values="14;21;14" dur="4.2s" begin="0.9s" repeatCount="indefinite"/></circle>
+      <circle cx="180" cy="250" fill="black"><animate attributeName="r" values="17;25;17" dur="4.8s" begin="0.2s" repeatCount="indefinite"/></circle>
+      <circle cx="450" cy="350" fill="black"><animate attributeName="r" values="15;23;15" dur="3.6s" begin="1.7s" repeatCount="indefinite"/></circle>
+      <circle cx="850" cy="200" fill="black"><animate attributeName="r" values="20;30;20" dur="4.3s" begin="1.0s" repeatCount="indefinite"/></circle>
+      <circle cx="1300" cy="250" fill="black"><animate attributeName="r" values="18;27;18" dur="5.5s" begin="0.4s" repeatCount="indefinite"/></circle>
+      <circle cx="1650" cy="350" fill="black"><animate attributeName="r" values="18;26;18" dur="4.0s" begin="1.9s" repeatCount="indefinite"/></circle>
+      <circle cx="1800" cy="650" fill="black"><animate attributeName="r" values="16;23;16" dur="4.7s" begin="0.5s" repeatCount="indefinite"/></circle>
+    </mask>
+  </defs>
+
+  <!-- ── EDGES ── -->
+  <g mask="url(#rimMask)" filter="url(#edgeGlow)" stroke-linecap="round">
+
+    <!-- Off-screen rim exits -->
+    <line x1="100" y1="850" x2="-60" y2="810" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.3"/>
+    <line x1="180" y1="1000" x2="100" y2="1180" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.25"/>
+    <line x1="580" y1="1020" x2="630" y2="1180" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.3"/>
+    <line x1="150" y1="550" x2="-60" y2="490" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.25"/>
+    <line x1="180" y1="250" x2="-60" y2="190" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.3"/>
+    <line x1="180" y1="250" x2="110" y2="-60" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.2"/>
+    <line x1="850" y1="200" x2="910" y2="-60" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.35"/>
+    <line x1="1300" y1="250" x2="1360" y2="-60" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.25"/>
+    <line x1="1650" y1="350" x2="1960" y2="295" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.3"/>
+    <line x1="1800" y1="650" x2="1960" y2="630" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.35"/>
+    <line x1="1750" y1="950" x2="1920" y2="1110" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.3"/>
+    <line x1="1450" y1="850" x2="1520" y2="1180" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.25"/>
+
+    <!-- Animated internal edges — bottom cluster -->
+    <line y1="850" y2="1000" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="100;104;100" dur="4.1s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="180;176;180" dur="3.5s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.7;0.2" dur="4.1s" repeatCount="indefinite"/>
+    </line>
+    <line y1="850" y2="780" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="100;95;100" dur="3.8s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="280;285;280" dur="4.8s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.15;0.65;0.15" dur="3.6s" repeatCount="indefinite"/>
+    </line>
+    <line y1="1000" y2="950" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="180;183;180" dur="4.5s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="350;347;350" dur="3.9s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.25;0.75;0.25" dur="4.5s" repeatCount="indefinite"/>
+    </line>
+    <line y1="780" y2="950" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="280;276;280" dur="4.2s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="350;354;350" dur="3.2s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.6;0.2" dur="4.2s" repeatCount="indefinite"/>
+    </line>
+    <line y1="780" y2="820" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="280;284;280" dur="5.0s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="480;476;480" dur="5.2s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.15;0.65;0.15" dur="5.0s" repeatCount="indefinite"/>
+    </line>
+    <line y1="950" y2="820" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="350;346;350" dur="3.7s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="480;485;480" dur="4.4s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.7;0.2" dur="3.7s" repeatCount="indefinite"/>
+    </line>
+    <line y1="950" y2="1020" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="350;355;350" dur="4.1s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="580;575;580" dur="4.5s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.7;0.2" dur="3.8s" repeatCount="indefinite"/>
+    </line>
+    <line y1="820" y2="1020" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="480;477;480" dur="4.9s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="580;584;580" dur="3.6s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.15;0.6;0.15" dur="4.9s" repeatCount="indefinite"/>
+    </line>
+    <line y1="820" y2="900" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="480;483;480" dur="3.5s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="700;696;700" dur="3.7s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.1;0.6;0.1" dur="4.7s" repeatCount="indefinite"/>
+    </line>
+    <line y1="1020" y2="900" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="580;576;580" dur="4.3s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="700;705;700" dur="4.1s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.65;0.2" dur="4.3s" repeatCount="indefinite"/>
+    </line>
+
+    <!-- Mid band connections -->
+    <line y1="850" y2="550" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="100;105;100" dur="4.6s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="150;146;150" dur="4.4s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.15;0.65;0.15" dur="5.5s" repeatCount="indefinite"/>
+    </line>
+    <line y1="550" y2="600" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="150;147;150" dur="3.9s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="350;353;350" dur="5.0s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.7;0.2" dur="3.9s" repeatCount="indefinite"/>
+    </line>
+    <line y1="780" y2="600" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="280;284;280" dur="4.8s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="350;346;350" dur="4.2s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.75;0.2" dur="3.4s" repeatCount="indefinite"/>
+    </line>
+    <line y1="600" y2="650" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="350;345;350" dur="4.4s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="550;555;550" dur="3.8s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.15;0.6;0.15" dur="4.4s" repeatCount="indefinite"/>
+    </line>
+    <line y1="820" y2="650" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="480;484;480" dur="5.1s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="550;546;550" dur="4.7s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.15;0.6;0.15" dur="4.0s" repeatCount="indefinite"/>
+    </line>
+
+    <!-- Connections to hub (850,750) - slightly thicker, teal -->
+    <line y1="650" y2="830" stroke="#14b8a6" stroke-width="2">
+      <animate attributeName="x1" values="550;547;550" dur="3.5s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="850;854;850" dur="4.6s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.8;0.2" dur="3.5s" repeatCount="indefinite"/>
+    </line>
+    <line y1="900" y2="830" stroke="#14b8a6" stroke-width="2">
+      <animate attributeName="x1" values="700;705;700" dur="4.2s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="850;845;850" dur="3.9s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.25;0.85;0.25" dur="4.8s" repeatCount="indefinite"/>
+    </line>
+    <line y1="830" y2="950" stroke="#14b8a6" stroke-width="2">
+      <animate attributeName="x1" values="850;846;850" dur="5.0s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="1150;1154;1150" dur="3.9s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.75;0.2" dur="5.0s" repeatCount="indefinite"/>
+    </line>
+    <line y1="950" y2="850" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="1150;1155;1150" dur="4.5s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="1450;1445;1450" dur="5.1s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.15;0.65;0.15" dur="5.2s" repeatCount="indefinite"/>
+    </line>
+    <line y1="850" y2="950" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="1450;1446;1450" dur="4.0s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="1750;1754;1750" dur="4.2s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.7;0.2" dur="4.0s" repeatCount="indefinite"/>
+    </line>
+    <line y1="650" y2="850" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="1800;1795;1800" dur="4.7s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="1450;1455;1450" dur="3.6s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.7;0.2" dur="4.3s" repeatCount="indefinite"/>
+    </line>
+
+    <!-- Top band connections -->
+    <line y1="550" y2="250" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="150;154;150" dur="4.1s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="180;176;180" dur="4.8s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.15;0.6;0.15" dur="4.1s" repeatCount="indefinite"/>
+    </line>
+    <line y1="250" y2="350" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="180;175;180" dur="3.9s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="450;455;450" dur="3.6s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.15;0.7;0.15" dur="4.6s" repeatCount="indefinite"/>
+    </line>
+    <line y1="600" y2="350" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="350;354;350" dur="4.4s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="450;446;450" dur="4.2s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.65;0.2" dur="4.4s" repeatCount="indefinite"/>
+    </line>
+
+    <!-- Connections to top hub (850,200) - teal -->
+    <line y1="350" y2="200" stroke="#14b8a6" stroke-width="2">
+      <animate attributeName="x1" values="450;445;450" dur="4.7s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="850;855;850" dur="4.3s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.8;0.2" dur="3.8s" repeatCount="indefinite"/>
+    </line>
+    <line y1="650" y2="200" stroke="#14b8a6" stroke-width="2">
+      <animate attributeName="x1" values="550;555;550" dur="4.0s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="850;846;850" dur="5.0s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.15;0.7;0.15" dur="4.0s" repeatCount="indefinite"/>
+    </line>
+    <line y1="200" y2="250" stroke="#14b8a6" stroke-width="2">
+      <animate attributeName="x1" values="850;846;850" dur="3.6s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="1300;1305;1300" dur="5.5s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.1;0.75;0.1" dur="5.4s" repeatCount="indefinite"/>
+    </line>
+    <line y1="830" y2="250" stroke="#14b8a6" stroke-width="2">
+      <animate attributeName="x1" values="850;854;850" dur="4.5s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="1300;1296;1300" dur="4.9s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.1;0.65;0.1" dur="4.5s" repeatCount="indefinite"/>
+    </line>
+    <line y1="250" y2="350" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="1300;1295;1300" dur="4.1s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="1650;1655;1650" dur="4.0s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.25;0.75;0.25" dur="3.7s" repeatCount="indefinite"/>
+    </line>
+    <line y1="850" y2="350" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="1450;1455;1450" dur="4.8s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="1650;1646;1650" dur="5.1s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.15;0.6;0.15" dur="4.8s" repeatCount="indefinite"/>
+    </line>
+    <line y1="350" y2="650" stroke="#3b82f6" stroke-width="1.5">
+      <animate attributeName="x1" values="1650;1645;1650" dur="3.9s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="1800;1805;1800" dur="4.7s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.2;0.7;0.2" dur="4.5s" repeatCount="indefinite"/>
+    </line>
+
+  </g>
+
+  <!-- ── PULSE RINGS on hub nodes ── (behind nodes, no mask needed) -->
+  <g fill="none">
+    <!-- Hub: (850, 750) -->
+    <circle cx="850" cy="830" stroke="#14b8a6" stroke-width="1.5">
+      <animate attributeName="r" values="22;70;22" dur="3.8s" begin="0s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.7;0;0.7" dur="3.8s" begin="0s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="850" cy="830" stroke="#14b8a6" stroke-width="1">
+      <animate attributeName="r" values="22;70;22" dur="3.8s" begin="1.9s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.5;0;0.5" dur="3.8s" begin="1.9s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Hub: (850, 200) -->
+    <circle cx="850" cy="200" stroke="#14b8a6" stroke-width="1.5">
+      <animate attributeName="r" values="20;65;20" dur="4.2s" begin="0.5s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.6;0;0.6" dur="4.2s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="850" cy="200" stroke="#14b8a6" stroke-width="1">
+      <animate attributeName="r" values="20;65;20" dur="4.2s" begin="2.6s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.4;0;0.4" dur="4.2s" begin="2.6s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Secondary hub: (280, 780) -->
+    <circle cx="280" cy="780" stroke="#6366f1" stroke-width="1.2">
+      <animate attributeName="r" values="20;58;20" dur="4.5s" begin="1.2s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.5;0;0.5" dur="4.5s" begin="1.2s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Secondary hub: (1300, 250) -->
+    <circle cx="1300" cy="250" stroke="#6366f1" stroke-width="1.2">
+      <animate attributeName="r" values="18;55;18" dur="5.0s" begin="0.8s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.5;0;0.5" dur="5.0s" begin="0.8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- ── NODES ── -->
+
+  <!-- Hub nodes (teal/indigo, larger, strong glow) -->
+  <g filter="url(#hubGlow)">
+    <!-- Central hub: (850, 750) -->
+    <circle cx="850" cy="830" fill="url(#tealGrad)" stroke="#14b8a6" stroke-width="2.5">
+      <animate attributeName="r" values="22;34;22" dur="4.6s" begin="1.1s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Top hub: (850, 200) -->
+    <circle cx="850" cy="200" fill="url(#tealGrad)" stroke="#14b8a6" stroke-width="2.5">
+      <animate attributeName="r" values="20;30;20" dur="4.3s" begin="1.0s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Secondary hubs -->
+    <circle cx="280" cy="780" fill="url(#hubGrad)" stroke="#6366f1" stroke-width="2.5">
+      <animate attributeName="r" values="20;30;20" dur="4.8s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1300" cy="250" fill="url(#hubGrad)" stroke="#6366f1" stroke-width="2.5">
+      <animate attributeName="r" values="18;27;18" dur="5.5s" begin="0.4s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Regular nodes (blue, standard glow) -->
+  <g filter="url(#nodeGlow)">
+    <circle cx="100" cy="850" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="18;28;18" dur="4.1s" begin="0.1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="180" cy="1000" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="15;23;15" dur="3.5s" begin="1.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="350" cy="950" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="16;25;16" dur="3.9s" begin="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="480" cy="820" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="18;27;18" dur="5.2s" begin="0.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="580" cy="1020" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="14;22;14" dur="4.5s" begin="2.1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="700" cy="900" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="17;26;17" dur="3.7s" begin="0.3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="150" cy="550" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="16;24;16" dur="4.4s" begin="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="350" cy="600" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="18;26;18" dur="5.0s" begin="0.7s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="550" cy="650" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="15;22;15" dur="3.8s" begin="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1150" cy="950" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="15;23;15" dur="3.9s" begin="0.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1450" cy="850" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="16;24;16" dur="5.1s" begin="2.0s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1750" cy="950" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="14;21;14" dur="4.2s" begin="0.9s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="180" cy="250" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="17;25;17" dur="4.8s" begin="0.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="450" cy="350" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="15;23;15" dur="3.6s" begin="1.7s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1650" cy="350" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="18;26;18" dur="4.0s" begin="1.9s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1800" cy="650" fill="url(#nodeGrad)" stroke="#3b82f6" stroke-width="2">
+      <animate attributeName="r" values="16;23;16" dur="4.7s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

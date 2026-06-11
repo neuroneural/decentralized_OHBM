@@ -47,18 +47,476 @@
   <div class="reveal">
     <!-- In between the <div="reveal"> and the <div class="slides"> -->
 <div class="slides">
-      <!-- 1. Title Slide -->
-      <section>
-        <h2 style="color: #000000; text-transform: none;">State of the Art and Future of Federated Learning in Neuroimaging</h2>
-        <div style="color: #000000; margin-top: 30px; font-size: 24px;">
+    <!-- Single section: all slides are vertical (nested) -->
+    <section>
+      <!-- 0. Title Slide -->
+      <section data-background-iframe="figures/background_nodes.svg" data-background-opacity="0.3" data-background-size="contain">
+        <h2>State of the Art and Future of Federated Learning in Neuroimaging</h2>
+        <h4>From Methods to Platforms</h4>
+        <div style="margin-top: 30px; font-size: 28px;">
           Sergey Plis
         </div>
         <p style="margin-top: 30px;">
           <img style="border:0; box-shadow: none;" height="80" src="figures/GSU.png" alt="GSU">
-          <img style="border:0; box-shadow: none; margin: 0 20px;" height="80" src="figures/TReNDS_logo_light.png" alt="TReNDS">
+          <img style="border:0; box-shadow: none; margin: -10 20px;" height="80" src="figures/TReNDS_logo.svg" alt="TReNDS">
           <img style="border:0; box-shadow: none;" height="80" src="figures/neuroneural_logo.png" alt="Neuroneural">
         </p>
       </section>
+
+      <!-- 1. Data is the new oil (again) -->
+      <section>
+        <h2>Data Is the New Oil (Again)</h2>
+        <blockquote dark style="font-size:38px;">Large, diverse cohorts are the foremost need in neuroimaging</blockquote>
+
+        <div style="display:flex; align-items:center; margin-top:10px;">
+          <!-- LEFT: reasons, revealed as fragments -->
+          <div style="width:54%; text-align:left; font-size:0.5em; line-height:1.25;">
+            <ul style="list-style:none; margin:0;">
+              <li class="fragment" data-fragment-index="1" style="margin-bottom:0.7em;">
+                <strong>Statistical power for tiny effects</strong>
+                <div class="tagline">Brain&ndash;behavior $r$ is small; reproducible BWAS need $N$ in the thousands.</div>
+              </li>
+              <li class="fragment" data-fragment-index="2" style="margin-bottom:0.7em;">
+                <strong>Generalization beyond one scanner</strong>
+                <div class="tagline">Multi-site heterogeneity acts as a regularizer toward protocol-invariant signal.</div>
+              </li>
+              <li class="fragment" data-fragment-index="3" style="margin-bottom:0.7em;">
+                <strong>Representativeness &amp; equity</strong>
+                <div class="tagline">Cohorts are WEIRD- and ancestry-skewed; diversity is both a validity and a fairness argument.</div>
+              </li>
+              <li class="fragment" data-fragment-index="4" style="margin-bottom:0;">
+                <strong>Rare conditions &amp; subtypes.</strong>
+                <div class="tagline">No single center has the cases; multi-site is the only way to build the cohort.</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- RIGHT: mini-visual that swaps in sync with each bullet -->
+          <div style="width:46%; position:relative; height:430px;">
+
+            <!-- viz 1: statistical power / shrinking funnel -->
+            <svg class="fragment fade-in-then-out" data-fragment-index="1" viewBox="0 0 440 400" style="position:absolute; top:0; left:0; width:100%;">
+              <text x="220" y="26" text-anchor="middle" fill="#586e75" font-family="Arial" font-weight="700" font-size="19">Estimated effect vs. sample size</text>
+              <line x1="70" y1="330" x2="410" y2="330" stroke="#bdb4a0" stroke-width="1.5"/>
+              <line x1="70" y1="60" x2="70" y2="330" stroke="#bdb4a0" stroke-width="1.5"/>
+              <text x="240" y="368" text-anchor="middle" fill="#7d8f95" font-family="Arial" font-size="14">sample size <tspan font-style="italic" font-family="Georgia,'Times New Roman',serif">N</tspan> (dozens &rarr; thousands)</text>
+              <text x="30" y="195" text-anchor="middle" fill="#7d8f95" font-family="Arial" font-size="14" transform="rotate(-90 30 195)">estimated <tspan font-style="italic" font-family="Georgia,'Times New Roman',serif">r</tspan></text>
+              <!-- funnel narrowing toward true small effect -->
+              <path d="M70,80 Q240,200 410,212 Q240,205 70,310 Z" fill="#6e8792" fill-opacity="0.13"/>
+              <line x1="70" y1="212" x2="410" y2="212" stroke="#9cab92" stroke-width="2" stroke-dasharray="6 4"/>
+              <text x="406" y="232" text-anchor="end" fill="#7d8f95" font-family="Arial" font-style="italic" font-size="13">true (small) effect</text>
+              <!-- scattered small-N estimates -->
+              <circle cx="98" cy="120" r="5" fill="#6e8792" fill-opacity="0.8"/>
+              <circle cx="110" cy="270" r="5" fill="#6e8792" fill-opacity="0.8"/>
+              <circle cx="135" cy="95" r="5" fill="#6e8792" fill-opacity="0.8"/>
+              <circle cx="150" cy="285" r="5" fill="#6e8792" fill-opacity="0.8"/>
+              <circle cx="185" cy="160" r="4.5" fill="#6e8792" fill-opacity="0.8"/>
+              <circle cx="220" cy="248" r="4.5" fill="#6e8792" fill-opacity="0.8"/>
+              <circle cx="265" cy="195" r="4" fill="#6e8792" fill-opacity="0.8"/>
+              <circle cx="320" cy="220" r="4" fill="#6e8792" fill-opacity="0.8"/>
+              <circle cx="370" cy="210" r="3.5" fill="#6e8792" fill-opacity="0.8"/>
+              <text x="240" y="392" text-anchor="middle" fill="#9aa0a0" font-family="Arial" font-style="italic" font-size="13">small <tspan font-family="Georgia,'Times New Roman',serif">N</tspan> &rarr; wild, irreproducible estimates</text>
+            </svg>
+
+            <!-- viz 2: heterogeneous scanners -> invariant features -->
+            <svg class="fragment fade-in-then-out" data-fragment-index="2" viewBox="0 0 440 400" style="position:absolute; top:0; left:0; width:100%;">
+              <text x="220" y="26" text-anchor="middle" fill="#586e75" font-family="Arial" font-weight="700" font-size="19">Many scanners, one shared signal</text>
+              <g font-family="Arial" font-size="14" text-anchor="middle">
+                <rect x="40" y="70" width="120" height="52" rx="8" fill="#6e8792" fill-opacity="0.15" stroke="#6e8792" stroke-width="1.6"/>
+                <text x="100" y="100" fill="#41545d" font-weight="700">3T &middot; vendor A</text>
+                <rect x="40" y="174" width="120" height="52" rx="8" fill="#6e8792" fill-opacity="0.15" stroke="#6e8792" stroke-width="1.6"/>
+                <text x="100" y="204" fill="#41545d" font-weight="700">1.5T &middot; vendor B</text>
+                <rect x="40" y="278" width="120" height="52" rx="8" fill="#6e8792" fill-opacity="0.15" stroke="#6e8792" stroke-width="1.6"/>
+                <text x="100" y="308" fill="#41545d" font-weight="700">7T &middot; vendor C</text>
+              </g>
+              <g stroke="#9cab92" stroke-width="2" fill="none">
+                <path d="M160,96 C240,96 260,168 317,168"/>
+                <path d="M160,200 L304,200"/>
+                <path d="M160,304 C240,304 260,232 317,232"/>
+              </g>
+              <circle cx="350" cy="200" r="46" fill="#9cab92" fill-opacity="0.18" stroke="#9cab92" stroke-width="2"/>
+              <text x="350" y="196" text-anchor="middle" fill="#41545d" font-family="Arial" font-weight="700" font-size="14">shared</text>
+              <text x="350" y="214" text-anchor="middle" fill="#41545d" font-family="Arial" font-weight="700" font-size="14">model</text>
+              <text x="220" y="378" text-anchor="middle" fill="#9aa0a0" font-family="Arial" font-style="italic" font-size="13">features that survive vendor, field &amp; motion</text>
+            </svg>
+
+            <!-- viz 3: representativeness / diversity -->
+            <svg class="fragment fade-in-then-out" data-fragment-index="3" viewBox="0 0 440 400" style="position:absolute; top:0; left:0; width:100%;">
+              <text x="220" y="26" text-anchor="middle" fill="#586e75" font-family="Arial" font-weight="700" font-size="19">Who is actually in the data?</text>
+              <g>
+                <!-- narrow, homogeneous "typical cohort" -->
+                <text x="120" y="70" text-anchor="middle" fill="#7d8f95" font-family="Arial" font-size="14">typical cohort</text>
+                <circle cx="92" cy="110" r="13" fill="#6e8792"/><circle cx="120" cy="110" r="13" fill="#6e8792"/><circle cx="148" cy="110" r="13" fill="#6e8792"/>
+                <circle cx="106" cy="138" r="13" fill="#6e8792"/><circle cx="134" cy="138" r="13" fill="#6e8792"/>
+                <text x="120" y="186" text-anchor="middle" fill="#9aa0a0" font-family="Arial" font-style="italic" font-size="12.5">WEIRD &middot; ancestry-narrow</text>
+              </g>
+              <line x1="220" y1="78" x2="220" y2="216" stroke="#d3cab7" stroke-width="1.5"/>
+              <g>
+                <text x="330" y="70" text-anchor="middle" fill="#7d8f95" font-family="Arial" font-size="14">diverse cohort</text>
+                <circle cx="298" cy="104" r="13" fill="#9cab92"/><circle cx="330" cy="104" r="13" fill="#c8b88a"/><circle cx="362" cy="104" r="13" fill="#8a6f6f"/>
+                <circle cx="290" cy="136" r="13" fill="#6e8792"/><circle cx="322" cy="136" r="13" fill="#a98c5f"/><circle cx="356" cy="136" r="13" fill="#9cab92"/>
+                <circle cx="306" cy="168" r="13" fill="#7c5e5e"/><circle cx="340" cy="168" r="13" fill="#c8b88a"/>
+                <text x="330" y="208" text-anchor="middle" fill="#9aa0a0" font-family="Arial" font-style="italic" font-size="12.5">ancestry &middot; age &middot; SES &middot; comorbidity</text>
+              </g>
+              <text x="220" y="262" text-anchor="middle" fill="#657b83" font-family="Arial" font-size="15">Models unfit on unseen groups fail.</text>
+              <text x="220" y="286" text-anchor="middle" fill="#657b83" font-family="Arial" font-size="15">Often <tspan font-style="italic">silently</tspan>.</text>
+            </svg>
+
+            <!-- viz 4: rare conditions aggregate to threshold -->
+            <svg class="fragment fade-in" data-fragment-index="4" viewBox="0 0 440 400" style="position:absolute; top:0; left:0; width:100%;">
+              <text x="220" y="26" text-anchor="middle" fill="#586e75" font-family="Arial" font-weight="700" font-size="19">Rare cases, scattered thin</text>
+              <g font-family="Arial" font-size="12" text-anchor="middle" fill="#7d8f95">
+                <circle cx="70" cy="90" r="30" fill="#6e8792" fill-opacity="0.10" stroke="#6e8792" stroke-width="1.4"/>
+                <circle cx="64" cy="86" r="5" fill="#d33682"/><circle cx="78" cy="96" r="5" fill="#d33682"/>
+                <text x="70" y="138" font-size="11">site A</text>
+                <circle cx="70" cy="210" r="30" fill="#6e8792" fill-opacity="0.10" stroke="#6e8792" stroke-width="1.4"/>
+                <circle cx="70" cy="208" r="5" fill="#d33682"/>
+                <text x="70" y="258" font-size="11">site B</text>
+                <circle cx="70" cy="320" r="30" fill="#6e8792" fill-opacity="0.10" stroke="#6e8792" stroke-width="1.4"/>
+                <circle cx="62" cy="318" r="5" fill="#d33682"/><circle cx="78" cy="326" r="5" fill="#d33682"/>
+                <text x="70" y="362" font-size="11">site C</text>
+              </g>
+              <g stroke="#9cab92" stroke-width="2" fill="none">
+                <path d="M100,90 C200,90 235,190 300,200"/>
+                <path d="M100,210 L300,203"/>
+                <path d="M100,320 C200,320 235,216 300,206"/>
+              </g>
+              <rect x="300" y="135" width="104" height="145" rx="8" fill="#9cab92" fill-opacity="0.16" stroke="#9cab92" stroke-width="2"/>
+              <g fill="#d33682">
+                <circle cx="322" cy="162" r="5"/><circle cx="342" cy="162" r="5"/><circle cx="362" cy="162" r="5"/><circle cx="382" cy="162" r="5"/>
+                <circle cx="322" cy="188" r="5"/><circle cx="342" cy="188" r="5"/><circle cx="362" cy="188" r="5"/><circle cx="382" cy="188" r="5"/>
+                <circle cx="322" cy="214" r="5"/><circle cx="342" cy="214" r="5"/><circle cx="362" cy="214" r="5"/><circle cx="382" cy="214" r="5"/>
+                <circle cx="332" cy="240" r="5"/><circle cx="352" cy="240" r="5"/><circle cx="372" cy="240" r="5"/>
+              </g>
+              <text x="352" y="302" text-anchor="middle" fill="#41545d" font-family="Arial" font-weight="700" font-size="13">one cohort, large enough</text>
+              <text x="220" y="392" text-anchor="middle" fill="#9aa0a0" font-family="Arial" font-style="italic" font-size="13">pooled across centers reaches a usable cohort</text>
+            </svg>
+
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          WEIRD = Western, Educated, Industrialized, Rich &amp; Democratic
+          [<a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/abs/weirdest-people-in-the-world/BF84F7517D56AFF7B7EB58411A554C17" target="_blank" rel="noopener noreferrer">Henrich et al., 2010</a>]
+          &middot; BWAS power [<a href="https://www.nature.com/articles/s41586-022-04492-9" target="_blank" rel="noopener noreferrer">Marek et al., 2022</a>]
+        </div>
+
+      </section>
+
+      <!-- 1b. Foundation-model era: even more data, almost none of it accessible -->
+      <section>
+        <h2>&hellip;and Foundation Models Are Hungry</h2>
+        <div style="position:relative; display:inline-block; margin-top:-45px;">
+          <img src="figures/foundation_model_training_data.svg" alt="Comparative training-data sizes of foundation models"
+               style="border:0; box-shadow:none; background:none; height:600px; max-width:100%; margin-top: -10px;">
+          <!-- fragment overlaid in the empty band of the chart -->
+          <div class="fragment" style="position:absolute; left:46%; top:30%; transform:translate(-70%,-70%); width:44%; text-align:center; line-height:1.25; font-size:0.8em; color: #FF0000;">
+            yet, globally, we have amassed<br>
+            <strong style="font-size:1.5em;">&gt;1 billion MRI scans</strong>
+          </div>
+        </div>
+        <div class="slide-footer">
+          Sources: [<a href="https://collectiveminds.health/articles/number-of-mri-scans-per-year-worldwide-overview-of-global-mri-utilization" target="_blank" rel="noopener noreferrer">global MRI volumes (~100&ndash;150M/yr)</a>]
+          &middot; [<a href="https://www.scality.com/use-cases/medical-imaging-archive/" target="_blank" rel="noopener noreferrer">imaging share of healthcare data</a>]
+        </div>
+        <aside class="notes">
+          This is the age of foundation models &mdash; everywhere, and now in neuroimaging.
+          But look at the scale gap: frontier LLMs train on tens of trillions of tokens; the best
+          brain-imaging foundation models train on ~50-100k scans (BrainIAC ~49k, BrainLM ~77k,
+          MR-RATE ~98k). Meanwhile the world acquires ~100-150M MRI scans every year (~40M in the US
+          alone); brain & spine are >50% of studies, so tens of millions of brain MRIs annually.
+          Medical imaging is ~70% of all stored healthcare data, yet <10% of images are ever retrieved
+          after 60 days. So the addressable pool is hundreds of millions of brain scans sitting dark in
+          PACS and research archives &mdash; and our FMs touch well under 0.1% of even a single year.
+          That locked "dark knowledge" is exactly what federation could unlock.
+          (Numbers are order-of-magnitude, off-the-cuff: collectiveminds.health MRI volumes; Scality/
+          industry PACS figures.)
+        </aside>
+      </section>
+
+      <!-- 2. Data mining approaches: three growing columns -->
+      <section>
+        <h2>Data Mining Approaches</h2>
+        <div class="dm-cols">
+
+          <!-- COLUMN 1: OpenNeuro (visible from the start) -->
+          <div class="dm-col">
+            <div class="dm-head"><img class="dm-logo" src="figures/openneuro_logo.svg" alt="OpenNeuro"></div>
+            <blockquote>fully shared, centralized store</blockquote>
+            <ul class="dm-list">
+              <li class="fragment" data-fragment-index="1"><i class="fa-solid fa-thumbs-up dm-pro"></i><span>Statistical power for tiny effects</span></li>
+              <li class="fragment" data-fragment-index="2"><i class="fa-solid fa-thumbs-up dm-pro"></i><span>Generalization beyond one scanner</span></li>
+              <li class="fragment" data-fragment-index="3"><i class="fa-solid fa-thumbs-up dm-pro"></i><span>Representativeness &amp; equity</span></li>
+              <li class="fragment" data-fragment-index="4"><i class="fa-solid fa-thumbs-up dm-pro"></i><span>Rare conditions &amp; subtypes</span></li>
+              <li class="fragment" data-fragment-index="5"><i class="fa-solid fa-thumbs-up dm-pro"></i><span>Full access to anonymized data</span></li>
+              <li class="fragment" data-fragment-index="6"><i class="fa-solid fa-thumbs-down dm-con"></i><span>Only data that <em>can</em> be openly shared</span></li>
+            </ul>
+            <hr class="dm-col-rule fragment fade-in" data-fragment-index="6">
+          </div>
+
+          <!-- COLUMN 2: ENIGMA (slot reserved from the start; content fades in) -->
+          <div class="dm-col">
+            <div class="fragment fade-in" data-fragment-index="7">
+              <div class="dm-head"><img class="dm-logo" src="figures/enigma_logo.png" alt="ENIGMA"></div>
+              <blockquote>data never leaves the site</blockquote>
+              <p class="dm-plus-head">Everything OpenNeuro, plus&hellip;</p>
+            </div>
+            <ul class="dm-list">
+              <li class="fragment" data-fragment-index="8"><i class="fa-solid fa-thumbs-up dm-pro"></i><span>Privacy, regulation &amp; governance</span></li>
+              <li class="fragment" data-fragment-index="9"><i class="fa-solid fa-thumbs-up dm-pro"></i><span>Logistics &amp; continual data</span></li>
+              <li class="fragment" data-fragment-index="10"><i class="fa-solid fa-thumbs-up dm-pro"></i><span>Incentives &amp; trust</span></li>
+              <li class="fragment" data-fragment-index="11"><i class="fa-solid fa-thumbs-down dm-con"></i><span>No access to raw data &mdash; <em>by design</em></span></li>
+              <li class="fragment" data-fragment-index="12"><i class="fa-solid fa-thumbs-down dm-con"></i><span>Manual meta-analysis, mostly</span></li>
+            </ul>
+            <hr class="dm-col-rule fragment fade-in" data-fragment-index="12">
+          </div>
+
+          <!-- COLUMN 3: Automation (squeezes in on the right, shifting 1 &amp; 2 left) -->
+          <div class="dm-col fragment fade-in" data-fragment-index="13">
+            <div class="dm-head"><i class="fa-solid fa-gears dm-logo-icon"></i><span class="dm-title">Automation</span></div>
+            <blockquote>the pipeline runs itself</blockquote>
+            <p class="dm-plus-head">Everything ENIGMA, plus&hellip;</p>
+            <ul class="dm-list">
+              <li class="fragment" data-fragment-index="14"><i class="fa-solid fa-thumbs-up dm-pro"></i><span>Enables iterative algorithms</span></li>
+              <li class="fragment" data-fragment-index="15"><i class="fa-solid fa-thumbs-up dm-pro"></i><span>Simplifies single-shot methods</span></li>
+              <li class="fragment" data-fragment-index="16"><i class="fa-solid fa-thumbs-up dm-pro"></i><span>Dramatically faster &mdash; no waiting on coordination &amp; DUAs</span></li>
+            </ul>
+            <hr class="dm-col-rule fragment fade-in" data-fragment-index="16">
+          </div>
+
+        </div>
+        <aside class="notes">
+          Three ways to mine multi-site data.
+          OpenNeuro = fully shared, centralized: easiest to work with, full access to anonymized
+          data, and it buys all four "data is the new oil" advantages &mdash; but only for the
+          slice of the world that can legally be shared openly.
+          ENIGMA = data stays local, meta-analysis: gets everything OpenNeuro does, PLUS
+          (1) privacy/regulation/governance &mdash; structural MRI is identifiable (faces reconstruct
+          from T1s even after defacing), it's PHI under HIPAA/GDPR/DUAs/IRB, so many sites legally
+          cannot release raw data; FL shares only model updates, respects data-localization /
+          sovereignty, and avoids a single centralized honeypot;
+          (2) logistics/continual data &mdash; moving petabyte-scale imaging is slow and costly,
+          compute where the data lives, and sites keep acquiring (continual contribution);
+          (3) incentives/trust &mdash; sites that keep control and credit participate; federation
+          lowers the political barrier, which is usually the real bottleneck, not the math.
+          Downsides: no direct access to the data (the privacy is the point), and it's mostly
+          manual meta-analysis.
+          Automation is the third axis: it makes federation iterative (not just one-shot),
+          simplifies single-shot methods, and &mdash; crucially &mdash; is dramatically faster,
+          not just in compute but by removing the long wait for human coordination and DUAs.
+          This sets up COINSTAC / NeuroFLAME.
+        </aside>
+      </section>
+
+      <!-- 3. Three-category framework: pillars feeding platforms -->
+      <section>
+        <div class="pillars-wrap">
+
+          <!-- LEFT: title sidebar -->
+          <div class="pillars-title">
+            <h2>Pillars of Federated Neuroimaging</h2>
+          </div>
+
+          <!-- RIGHT: V-structure figure -->
+          <div class="pillars-fig">
+
+            <!-- two top pillars -->
+            <div class="pillars-top">
+              <!-- 1. Methods: appears first, centered, then shifts left -->
+              <div class="layer-box fragment fade-in" data-fragment-index="1">
+                <p class="lyr-title">1 &middot; Methods</p>
+                <blockquote>specific analyses &amp; models, made federated</blockquote>
+                <p class="lyr-eg">VBM &middot; ICA/dFNC &middot; brain age &middot; AD</p>
+              </div>
+              <!-- 2. Frameworks: collapsed until revealed, pushing Methods left -->
+              <div class="layer-box lyr-collapse fragment fade-in" data-fragment-index="2">
+                <p class="lyr-title">2 &middot; Frameworks</p>
+                <blockquote>reusable engines, FAIR &amp; harmonization plumbing</blockquote>
+                <p class="lyr-eg">Fed-BioMed &middot; Nipoppy &middot; Neurobagel &middot; NV FLARE</p>
+              </div>
+            </div>
+
+            <!-- converging arrows (appear with platforms) -->
+            <svg class="pillars-arrows fragment fade-in" data-fragment-index="3" viewBox="0 0 620 460" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="varrow" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto">
+                  <path d="M0,0 L9,4.5 L0,9 Z" fill="#9cab92"></path>
+                </marker>
+              </defs>
+              <path d="M160,118 C200,210 250,250 300,300" fill="none" stroke="#9cab92" stroke-width="3" marker-end="url(#varrow)"></path>
+              <path d="M460,118 C420,210 370,250 320,300" fill="none" stroke="#9cab92" stroke-width="3" marker-end="url(#varrow)"></path>
+            </svg>
+
+            <!-- 3. Platforms: the layer the pillars feed -->
+            <div class="layer-box pillars-platform fragment fade-in" data-fragment-index="3">
+              <p class="lyr-title">3 &middot; Platforms</p>
+              <blockquote>turnkey systems that run vetted pipelines across sites</blockquote>
+              <p class="lyr-eg">COINSTAC &middot; NeuroFLAME</p>
+            </div>
+
+          </div>
+        </div>
+
+        <aside class="notes">
+          The central conceptual slide.
+          Methods = concrete federated analyses / papers (VBM, ICA/dFNC, brain age, AD).
+          Frameworks = reusable engines & FAIR/harmonization plumbing (Fed-BioMed, Nipoppy,
+          Neurobagel, NV FLARE, Vantage6).
+          Methods and frameworks are semi-independent, but both feed into Platforms =
+          end-user systems that run vetted pipelines across sites (COINSTAC / NeuroFLAME).
+          Work migrates upward: bespoke method code and glue infrastructure get absorbed into
+          turnkey platforms.
+        </aside>
+      </section>
+
+      <!-- 4. Analysis vs learning -->
+      <section>
+        <h2>Federated Analysis vs Federated Learning</h2>
+        <div style="display:flex; justify-content:space-around; margin-top:40px;">
+          <div>
+            <h3>Analysis</h3>
+            <p>stats / normative / ICA / VBM</p>
+          </div>
+          <div>
+            <h3>Learning</h3>
+            <p>train ML / deep nets</p>
+          </div>
+        </div>
+        <aside class="notes">
+          A second axis that cuts across all three categories.
+          Analysis: exchange sufficient statistics (GLM, VBM, ICA/dFNC, normative models).
+          Learning: iterative parameter/gradient exchange (FedAvg variants, Fed-BioMed).
+          COINSTAC/NeuroFLAME support BOTH workloads -- one reason they're special.
+        </aside>
+      </section>
+
+      <!-- 5. Where later talks land -->
+      <section>
+        <h2>Who Lives Where in This Landscape?</h2>
+        <ul>
+          <li class="fragment">Bayer &mdash; PCNtoolkit (federated normative models) &middot; Cat 1+2, analysis</li>
+          <li class="fragment">Wang &mdash; Nipoppy / Neurobagel / Fed-BioMed &middot; Cat 1+2, FL infra</li>
+          <li class="fragment">Lorenzi &mdash; Fed-BioMed, robustness, unlearning &middot; Cat 1+2, strong privacy</li>
+          <li class="fragment">COINSTAC / NeuroFLAME &middot; Cat 3</li>
+        </ul>
+        <aside class="notes">
+          Preview the session and place the speakers who follow me in the framework.
+          Say out loud who is mostly analysis vs learning, and roughly how strong the
+          privacy/guarantees are. Slide just shows markers + minimal labels.
+        </aside>
+      </section>
+
+      <!-- 6. Category 1: methods & applications -->
+      <section>
+        <h2>Category 1: Methods &amp; Applications</h2>
+        <div style="display:flex; justify-content:space-around; margin-top:40px;">
+          <div>
+            <h3>Classical analyses</h3>
+            <p>Federated VBM, ICA/dFNC, normative models</p>
+          </div>
+          <div>
+            <h3>ML / deep</h3>
+            <p>Brain age, AD prediction, reconstruction</p>
+          </div>
+        </div>
+        <!-- TODO: illustration - federated vs centralized VBM map; brain-age MAE bar chart -->
+        <aside class="notes">
+          The crowded space of papers: clever algorithms on structural MRI and fMRI,
+          both federated analysis and federated learning.
+          Examples: Gazula et al. federated VBM/dFNC; Neuromark ICA in COINSTAC (~2000 adolescents);
+          FLightcase brain-age in MS; Vantage6+PHT brain-age; MetisFL AD prediction.
+          Illustration idea: federated-vs-centralized statistical map overlap + "same or better" MAE bar.
+        </aside>
+      </section>
+
+      <!-- 7. Category 2: frameworks & infrastructure -->
+      <section>
+        <h2>Category 2: Frameworks &amp; Infrastructure</h2>
+        <div style="display:flex; justify-content:space-around; margin-top:40px;">
+          <div>Fed-BioMed</div>
+          <div>Nipoppy / Neurobagel</div>
+          <div>NV FLARE, Vantage6&hellip;</div>
+        </div>
+        <p class="fragment" style="margin-top:40px;">Engines, FAIR workflows, harmonization</p>
+        <!-- TODO: illustration - stack cartoon: data -> Nipoppy -> Neurobagel -> Fed-BioMed -> model -->
+        <aside class="notes">
+          The things you glue together: FL engines, FAIR data pipelines, harmonization/search.
+          Essential, but you still need serious engineering to get from here to a working study.
+          Stack cartoon: data -> Nipoppy -> Neurobagel -> Fed-BioMed -> model.
+        </aside>
+      </section>
+
+      <!-- 8. Category 3: platforms -->
+      <section>
+        <h2>Category 3: Neuro Platforms</h2>
+        <div style="display:flex; justify-content:space-around; margin-top:40px;">
+          <div><h3>COINSTAC</h3></div>
+          <div><h3>NeuroFLAME</h3><p>on NV FLARE</p></div>
+        </div>
+        <p class="fragment" style="margin-top:40px;">GUI, vetted pipelines, Vaults, privacy-aware</p>
+        <!-- TODO: illustration - COINSTAC/NeuroFLAME GUI schematic; Vaults icon -->
+        <aside class="notes">
+          Here the end-user sees "run VBM" or "run ICA/dFNC" rather than "configure FedAvg on five sites".
+          This category is NOT crowded -- this is where we spend most of our time.
+          COINSTAC: first neuro-first decentralized analysis platform; Vaults = always-on datasets.
+          NeuroFLAME: next gen, rebuilt on NV FLARE, modular, differential privacy.
+        </aside>
+      </section>
+
+      <!-- 9. Sparse / communication-efficient FL -->
+      <section>
+        <h2>Sparse Federated Models for Neuroimaging</h2>
+        <ul>
+          <li class="fragment">Foundation models are huge</li>
+          <li class="fragment">Bandwidth is limited</li>
+          <li class="fragment">Exchange only a few % of weights &mdash; same performance</li>
+        </ul>
+        <!-- TODO: TMLR results figure -->
+        <aside class="notes">
+          Future: communication-efficient FL.
+          Big models + FL = communication bottleneck; naive FL of giant models is not viable
+          over hospital networks.
+          Our TMLR work: sparse models / sparse updates, tiny fraction of weights exchanged,
+          accuracy preserved. Add the results figure here.
+        </aside>
+      </section>
+
+      <!-- 10. Inside-Out Federated Learning (full-bleed figure with woven-in title) -->
+      <section data-background="figures/inside-out-FL_titled.svg" data-background-size="contain">
+        <aside class="notes">
+          Future-methods slide (Category 1) aimed at making Cat 3 platforms future-proof.
+          Standard FL assumes the whole model updates everywhere.
+          Foundation models flip that: most of the model frozen and shared, only small parts
+          federated (low-dim adapters / sparse subsets). Align "inside" (big model) and
+          "outside" (sites) to decentralized network constraints.
+        </aside>
+      </section>
+
+      <!-- 11. Final diagram + Brainchop north star -->
+      <section>
+        <h2>North Star: Zero-Install, Privacy-First UX</h2>
+        <div style="display:flex; justify-content:space-around; margin-top:40px;">
+          <div>
+            <h3>Brainchop</h3>
+            <p>local, in-browser, no install, data never leaves device</p>
+          </div>
+          <div>
+            <h3>NeuroFLAME</h3>
+            <p>federated training &amp; analysis &mdash; almost this easy</p>
+          </div>
+        </div>
+        <!-- TODO: final unified diagram - category x-axis, usability x privacy space, Brainchop in corner -->
+        <aside class="notes">
+          Closing vision + unified diagram.
+          Brainchop = local, privacy-max, single-site, zero footprint (edge inference, not federated).
+          NeuroFLAME/COINSTAC = distributed, privacy-aware, multi-site.
+          20-second summary: three layers (methods / frameworks / platforms); within each,
+          federated analysis vs learning, under different privacy regimes. Most literature is in
+          Cat 1-2; our NeuroFLAME effort pushes Cat 3, plus sparse models & inside-out FL for the
+          foundation-model era.
+        </aside>
+      </section>
+    </section>
 </div>
 
   </div>
@@ -196,6 +654,148 @@
   </script>
 
   <style type="text/css">
+    /* Secondary, skippable description indented under a bold item header */
+    .reveal .tagline { margin-left: 1.5em; margin-top: 0.15em; }
+
+    /* ===== Slide: Data Mining Approaches (three growing columns) ===== */
+    .reveal .dm-cols {
+      display: flex;
+      gap: 3%;
+      align-items: flex-start;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .reveal .dm-col {
+      flex: 1 1 0;
+      max-width: 40%;
+      min-width: 0;
+      text-align: left;
+      /* smooth squeeze / shift-left when a new column is revealed */
+      transition: max-width .6s ease, flex-basis .6s ease, flex-grow .6s ease,
+                  padding .6s ease, margin .6s ease, opacity .5s ease;
+    }
+    /* un-revealed columns collapse to zero width so the visible ones stay centered */
+    .reveal .dm-col.fragment:not(.visible) {
+      flex-grow: 0 !important;
+      flex-basis: 0 !important;
+      max-width: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      opacity: 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .reveal .dm-head {
+      height: 118px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+    }
+    .reveal .dm-logo { height: 104px; width: auto; border: 0; box-shadow: none; background: none; margin: 0; }
+    /* gear "logo" for the Automation column, color-matched to the headings */
+    .reveal .dm-logo-icon { font-size: 76px; color: #586e75; margin-right: 0.22em; }
+    /* column title styled like the slide heading (League Gothic, small-caps feel) */
+    .reveal .dm-title {
+      font-family: "League Gothic", Impact, sans-serif;
+      color: #586e75;
+      text-transform: uppercase;
+      font-weight: normal;
+      font-size: 1.5em;
+      line-height: 1;
+    }
+    .reveal .dm-col blockquote {
+      width: 100%;
+      margin: 0 0 0.6em;
+      padding: 0.32em 0.62em;
+      font-size: 0.62em;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .reveal .dm-plus-head { font-size: 0.62em; font-weight: 700; color: #586e75; margin: 0 0 0.5em; }
+    .reveal .dm-list { list-style: none; margin: 0; padding: 0; font-size: 0.58em; line-height: 1.3; }
+    .reveal .dm-list li { display: flex; align-items: flex-start; margin-bottom: 0.55em; }
+    .reveal .dm-list li i { flex: 0 0 1.25em; margin-right: 0.5em; margin-top: 0.12em; text-align: center; }
+    .reveal .dm-pro { color: #6c8a3f; }   /* thumbs up */
+    .reveal .dm-con { color: #b58900; }   /* thumbs down */
+    /* closing cue under a column's last bullet: a single thin, light line spanning the full
+       column width (same faint tone as the box outlines) — warns the next step is the next column */
+    .reveal .dm-col-rule {
+      width: 100%;
+      height: 0;
+      margin: 0.7em 0 0;
+      padding: 0;
+      border: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.18);
+      background: none;
+      box-shadow: none;
+    }
+
+    /* ===== Slide: Pillars of Federated Neuroimaging ===== */
+    .reveal .pillars-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 10px;
+    }
+    .reveal .pillars-title { flex: 0 0 300px; width: 300px; text-align: left; }
+    .reveal .pillars-title h2 { margin: 0; font-size: 1.95em; line-height: 1.05; }
+
+    .reveal .pillars-fig { position: relative; flex: 0 0 620px; width: 620px; height: 460px; }
+    .reveal .pillars-top { display: flex; justify-content: center; gap: 40px; }
+
+    .reveal .layer-box {
+      flex: 1 1 0;
+      max-width: 280px;
+      min-height: 96px;
+      box-sizing: border-box;
+      border: 2px solid #6e8792;
+      border-radius: 12px;
+      background: rgba(110, 135, 146, 0.10);
+      padding: 12px 16px;
+      text-align: left;
+      transition: max-width .55s ease, flex-basis .55s ease, flex-grow .55s ease,
+                  padding .55s ease, border-width .55s ease, opacity .5s ease;
+    }
+    /* Frameworks collapses to keep Methods centered until it is revealed */
+    .reveal .layer-box.lyr-collapse.fragment:not(.visible) {
+      flex-grow: 0 !important;
+      flex-basis: 0 !important;
+      max-width: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      border-width: 0 !important;
+      overflow: hidden;
+      opacity: 0;
+    }
+    .reveal .layer-box .lyr-title {
+      font-family: "League Gothic", Impact, sans-serif;
+      text-transform: uppercase;
+      color: #586e75;
+      font-size: 1.2em;
+      line-height: 1;
+      margin: 0 0 6px;
+    }
+    .reveal .layer-box blockquote {
+      width: 100%;
+      margin: 0 0 6px;
+      padding: 4px 9px;
+      font-size: 0.42em;
+      line-height: 1.22;
+    }
+    .reveal .layer-box .lyr-eg { font-size: 0.34em; color: #7d8f95; line-height: 1.2; margin: 0; }
+
+    /* Platforms anchored bottom-center; arrows overlay the figure */
+    .reveal .pillars-platform {
+      position: absolute;
+      left: 140px; top: 318px;
+      width: 340px; max-width: 340px;
+      text-align: center;
+    }
+    .reveal .pillars-platform blockquote { margin: 0 auto 6px; }
+    .reveal .pillars-arrows { position: absolute; left: 0; top: 0; width: 620px; height: 460px; pointer-events: none; }
+
     /* 1. Style header/footer <div> so they are positioned as desired. */
     #header-left {
       position: absolute;
@@ -221,11 +821,11 @@
     <div id="header">
       <div id="header-left">
         <img style="border:0; box-shadow: 0px 0px 0px
-			      rgba(150, 150, 255,0.8);" width="150" src="figures/BRAINCHOP.png" alt="brainchop">
+			      rgba(150, 150, 255,0.8);" width="100" src="figures/neuroneural_logo.png" alt="neuroneural">
       </div>
       <div id="header-right">
         <img style="border:0; box-shadow: 0px 0px 0px
-			      rgba(150, 150, 255,0.8);" width="250" src="figures/TReNDS_logo_light.png" alt="TReNDS">
+			      rgba(150, 150, 255,0.8);" width="100" src="figures/TReNDS_brain.svg" alt="TReNDS">
         <!-- <img style="border:0; box-shadow: 0px 0px 0px -->
         <!--             rgba(150, 150, 255, 0.8);" -->
         <!--      width="100" -->

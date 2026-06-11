@@ -104,6 +104,12 @@ defhead {
 
 .reveal section img { background:none; border:none; box-shadow:none; }
 
+/* Secondary, skippable description under a bold item header */
+.reveal .tagline {
+    margin-left: 1.4em;
+    margin-top: 0.15em;
+}
+
 .backgrounds {
   transition: opacity 0.1s ease; /* Smooth transition for the dimming effect */
 }
