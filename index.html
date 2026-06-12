@@ -481,8 +481,68 @@
         </aside>
       </section>
 
-      <!-- 10. Inside-Out Federated Learning (full-bleed figure with woven-in title) -->
-      <section data-background="figures/inside-out-FL_titled.svg" data-background-size="contain">
+      <!-- 9a. Challenges of Federating Models (animated d3 rebuild of the "hungry" chart) -->
+      <section id="cfm-slide">
+        <h2>Challenges of Federating Models</h2>
+        <div id="cfm-stage" style="position:relative; width:100%; margin-top:-30px;">
+          <svg id="cfm-svg" viewBox="0 0 1396 715" style="width:100%; height:auto; max-height:655px; background:none;"></svg>
+        </div>
+        <!-- invisible beat triggers: each click advances one animation beat -->
+        <span class="fragment" data-cfm="1"></span>
+        <span class="fragment" data-cfm="2"></span>
+        <div class="slide-footer">
+          Params: [<a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener noreferrer">GPT-3 175B</a>]
+          &middot; [<a href="https://arxiv.org/abs/2303.00915" target="_blank" rel="noopener noreferrer">BiomedCLIP ViT-B</a>]
+          &middot; [<a href="https://www.nature.com/articles/s41593-026-02202-6" target="_blank" rel="noopener noreferrer">BrainIAC</a>]
+          &middot; [<a href="https://openreview.net/forum?id=RwI7ZEfR27" target="_blank" rel="noopener noreferrer">BrainLM</a>]
+          &middot; frontier/open figures estimated
+        </div>
+        <aside class="notes">
+          Same models as the "hungry" slide, re-asked along a new axis. Beat 1: the model names
+          fly from the left list onto their own bubbles. Beat 2 (single move): the new y-axis &mdash;
+          MODEL PARAMETERS &mdash; flashes in as the bubbles rescale, and the gap explodes &mdash;
+          neuroimaging FMs sit at tens of millions of parameters (BrainGFM ~25M, BrainIAC ~46M,
+          MedSAM ~94M, BrainLM ~111M, BiomedCLIP ~200M) while frontier LLMs tower 3-5 orders of
+          magnitude higher (GPT-3 175B, Gemma 4 ~27B, Qwen3.6 ~235B, frontier closed ~1T+).
+          That is the federation challenge: we must federate models this large over hospital
+          networks that will never centralize the data. (Closed/2026 figures are estimates;
+          MR-RATE is a dataset, so it drops out of a parameter axis.)
+        </aside>
+      </section>
+
+      <!-- 9b. Federated Foundation Encoders (League Gothic header + figure; guided 2-beat reveal) -->
+      <section>
+        <h2>Federated Foundation Encoders</h2>
+        <img src="figures/foundation_single_node.svg" alt="Federated foundation encoders: a single node"
+             style="border:0; box-shadow:none; background:none; width:92%; max-width:1000px; height:auto; margin-top:10px;">
+        <aside class="notes">
+          A single node may hold PRIVATE data in any number of modalities. Pre-trained uni-modal
+          FOUNDATION encoders map each modality into a unified EMBEDDING space; on top sits a
+          task-specific SPARSE model where each modality is represented by only a small subset of
+          parameters, trained by backprop against the node's PRIVATE labels.
+          The federation mechanics (sparse modality-specific gradient exchange with an aggregator)
+          are deliberately left out here -- this slide is just the per-node picture.
+        </aside>
+      </section>
+
+      <!-- 10. Inside-Out Federated Learning (real League Gothic header + figure beneath) -->
+      <section>
+        <h2>Inside-Out Federated Learning (IOFL)</h2>
+        <!-- guided 3-beat reveal: aggregator -> single node -> whole figure,
+             via clip-path on aligned copies over a dimmed backdrop -->
+        <div class="iofl-stack">
+          <img class="iofl-base" src="figures/inside-out-FL_slide.svg" alt="Inside-Out Federated Learning schematic">
+          <!-- aggregator highlighted by default on slide entry -->
+          <img class="iofl-layer" src="figures/inside-out-FL_slide.svg" alt=""
+               style="clip-path: inset(2% 29.5% 41% 0%);">
+          <!-- click 1: single node -->
+          <img class="iofl-layer fragment fade-in" data-fragment-index="1"
+               src="figures/inside-out-FL_slide.svg" alt=""
+               style="clip-path: inset(2% 0% 41% 70.5%);">
+          <!-- click 2: whole figure -->
+          <img class="iofl-layer fragment fade-in" data-fragment-index="2"
+               src="figures/inside-out-FL_slide.svg" alt="">
+        </div>
         <aside class="notes">
           Future-methods slide (Category 1) aimed at making Cat 3 platforms future-proof.
           Standard FL assumes the whole model updates everywhere.
@@ -653,6 +713,243 @@
 
   </script>
 
+  <!-- ===== Challenges of Federating Models: animated d3 chart controller ===== -->
+  <script>
+  (function () {
+    // ---- geometry (matches the original "hungry" SVG layout) ----
+    var PLOT_L = 210, PLOT_R = 1380, DEC = 157.1;   // px per log-decade on the x (data) axis
+    var ROW0 = 96, ROWH = 53;                        // initial categorical row layout
+
+    // x = training-data position (taken straight from the original figure)
+    // yRow = categorical row; params = model parameter count (for the rescale)
+    // side = which way the name/value label points off the bubble
+    // jx = horizontal-only jitter to separate same-x bubbles (never vertical, so rows stay even & gridlines stay honest)
+    // ldy = vertical nudge of the LABEL block only (bubble stays exactly on its value)
+    var DATA = [
+      {key:'gemini', name:'Gemini 3 Pro', sub:'Frontier closed model (Google)',  cx:1317.5, params:1.5e12, kind:'est', dataLbl:'~tens of T tokens*', side:'L', jx:-28, ldy:-22},
+      {key:'claude', name:'Claude Opus 4.8', sub:'Frontier closed model (Anthropic)', cx:1317.5, params:1.5e12, kind:'est', dataLbl:'~tens of T tokens*', side:'L', jx:28, ldy:24},
+      {key:'qwen',   name:'Qwen3.6', sub:'Open-weight family (Alibaba)',         cx:1285.4, params:2.35e11, kind:'llm', dataLbl:'~25T tokens', side:'L', jx:0, ldy:0},
+      {key:'gemma',  name:'Gemma 4', sub:'Open multimodal family (DeepMind)',    cx:1270.2, params:2.7e10,  kind:'est', dataLbl:'undisclosed*', side:'L', jx:0, ldy:0},
+      {key:'gpt3',   name:'GPT-3', sub:'Historic baseline, still cited',         cx:983.5,  params:1.75e11, kind:'llm', dataLbl:'300B tokens', side:'R', jx:0, ldy:0},
+      {key:'bclip',  name:'BiomedCLIP', sub:'PMC-15M figure-caption pairs',      cx:709.1,  params:2.0e8,   kind:'med', dataLbl:'15M image-text pairs', side:'R', jx:0, ldy:0},
+      {key:'medsam', name:'MedSAM', sub:'Promptable segmentation FM',            cx:552.0,  params:9.4e7,   kind:'med', dataLbl:'1.5M+ image-mask pairs', side:'R', jx:0, ldy:0},
+      {key:'mrrate', name:'MR-RATE', sub:'Large open multimodal MRI dataset',    cx:365.8,  params:null,    kind:'med', dataLbl:'98k MRI studies', side:'R', jx:0, ldy:0},
+      {key:'brainlm',name:'BrainLM', sub:'fMRI activity foundation model (Yale)',cx:349.6,  params:1.11e8,  kind:'med', dataLbl:'77k fMRI recordings', side:'R', jx:16, ldy:0},
+      {key:'braingfm',name:'BrainGFM', sub:'Graph FM for fMRI representations',  cx:332.3,  params:2.5e7,   kind:'med', dataLbl:'60k fMRI scans', side:'R', jx:4, ldy:0},
+      {key:'brainiac',name:'BrainIAC', sub:'Structural brain MRI FM',            cx:318.4,  params:4.6e7,   kind:'med', dataLbl:'48,965 brain MRIs', side:'R', rside:'L', jx:-20, ldy:0}
+    ];
+    DATA.forEach(function (d, i) { d.yRow = ROW0 + i * ROWH; });
+
+    // x tick anchors (log scale with an accordion break between 100M and 100B)
+    var XTICKS = [
+      {lbl:'10k',x:210},{lbl:'100k',x:367.1},{lbl:'1M',x:524.3},{lbl:'10M',x:681.4},{lbl:'100M',x:838.6},
+      {lbl:'100B',x:908.6},{lbl:'1T',x:1065.7},{lbl:'10T',x:1222.9},{lbl:'100T',x:1380}
+    ];
+
+    // parameter (y) axis for the rescale: log10, 10M .. 10T
+    var P_TOP = 70, P_BOT = 600, P_LO = 7, P_HI = 13;   // log10 bounds (1e7 .. 1e13)
+    function yParam(p) { return P_BOT - (Math.log10(p) - P_LO) / (P_HI - P_LO) * (P_BOT - P_TOP); }
+    var PTICKS = [
+      {lbl:'10M',v:1e7},{lbl:'100M',v:1e8},{lbl:'1B',v:1e9},{lbl:'10B',v:1e10},
+      {lbl:'100B',v:1e11},{lbl:'1T',v:1e12},{lbl:'10T',v:1e13}
+    ];
+
+    var FILL = {llm:'#b0413f', med:'#9cab92', est:'#e6cdd1'};
+    var STROKE = {llm:'#8f3331', med:'#7d8d72', est:'#c4737b'};
+
+    var built = false, curBeat = 0;
+    function paramText(d) {
+      if (d.params == null) return 'dataset · no params';
+      var p = d.params;
+      if (p >= 1e12) return (p/1e12).toFixed(p>=1e13?0:1).replace(/\.0$/,'') + 'T params*';
+      if (p >= 1e9)  return Math.round(p/1e9) + 'B params' + (d.kind==='est'?'*':'');
+      return Math.round(p/1e6) + 'M params';
+    }
+
+    function build() {
+      var svg = d3.select('#cfm-svg');
+      svg.selectAll('*').remove();
+
+      // ---- x-axis (training data) ----
+      var gx = svg.append('g').attr('class','cfm-xaxis');
+      gx.append('line').attr('x1',210).attr('y1',62).attr('x2',838.6).attr('y2',62)
+        .attr('stroke','#bdb4a0').attr('stroke-width',1.2);
+      gx.append('line').attr('x1',908.6).attr('y1',62).attr('x2',1380).attr('y2',62)
+        .attr('stroke','#bdb4a0').attr('stroke-width',1.2);
+      XTICKS.forEach(function (t) {
+        gx.append('line').attr('x1',t.x).attr('y1',62).attr('x2',t.x).attr('y2',640)
+          .attr('stroke','#d3cab7').attr('stroke-width',1).attr('opacity',0.6);
+        gx.append('text').attr('x',t.x).attr('y',54).attr('text-anchor','middle')
+          .attr('fill','#7d8f95').style('font','400 15px Arial,sans-serif').text(t.lbl);
+      });
+      // accordion break: two interleaved vertical zigzags filling the axis gap (like the original)
+      function zig(x0, yTop, yBot) {
+        var d = 'M ' + x0 + ' ' + yTop, y = yTop, s = 1;
+        while (y < yBot) { var ny = Math.min(y + 16, yBot); d += ' L ' + (x0 + s * 7) + ' ' + ny; y = ny; s = -s; }
+        return d;
+      }
+      [866, 880].forEach(function (x0) {
+        gx.append('path').attr('d', zig(x0, 62, 640))
+          .attr('stroke', '#cbc2af').attr('stroke-width', 1.2).attr('fill', 'none');
+      });
+      gx.append('text').attr('x',873).attr('y',656).attr('text-anchor','middle')
+        .attr('fill','#9aa0a0').style('font','italic 13px Arial,sans-serif').text('scale break');
+      // persistent x-axis title
+      gx.append('text').attr('id','cfm-xtitle').attr('x',795).attr('y',700).attr('text-anchor','middle')
+        .attr('fill','#6b7f89').style('font','italic 15px Arial,sans-serif')
+        .attr('opacity',1).text('x: training-data size');
+
+      // ---- parameter (y) axis: built hidden, revealed on rescale ----
+      var gy = svg.append('g').attr('class','cfm-yaxis').attr('opacity',0);
+      PTICKS.forEach(function (t) {
+        gy.append('line').attr('x1',210).attr('y1',yParam(t.v)).attr('x2',1380).attr('y2',yParam(t.v))
+          .attr('stroke','#d3cab7').attr('stroke-width',1).attr('stroke-dasharray','3,4').attr('opacity',0.7);
+        gy.append('text').attr('x',200).attr('y',yParam(t.v)+5).attr('text-anchor','end')
+          .attr('fill','#7d8f95').style('font','400 15px Arial,sans-serif').text(t.lbl);
+      });
+      // rotated y-axis title (the "flash")
+      svg.append('text').attr('id','cfm-ytitle')
+        .attr('transform','translate(140,335) rotate(-90)').attr('text-anchor','middle')
+        .attr('fill','#9c4347').style('font','700 26px "Arial Narrow",Arial,sans-serif')
+        .attr('opacity',0).text('MODEL PARAMETERS (count)');
+
+      // ---- per-model groups (bubble + value label + name + sub) ----
+      var groups = svg.selectAll('.cfm-node').data(DATA, function (d){return d.key;})
+        .enter().append('g').attr('class','cfm-node').attr('data-key',function(d){return d.key;});
+
+      groups.append('circle').attr('class','cfm-bubble')
+        .attr('cx',function(d){return d.cx;}).attr('cy',function(d){return d.yRow;})
+        .attr('r',function(d){return d.kind==='med'?14:18;})
+        .attr('fill',function(d){return FILL[d.kind];})
+        .attr('stroke',function(d){return STROKE[d.kind];}).attr('stroke-width',1.5)
+        .attr('stroke-dasharray',function(d){return d.kind==='est'?'4,3':null;});
+
+      // value label (the "300B tokens" etc.) sits to the right of the bubble
+      groups.append('text').attr('class','cfm-val')
+        .attr('x',function(d){return d.cx + (d.kind==='med'?20:24);})
+        .attr('y',function(d){return d.yRow+5;}).attr('text-anchor','start')
+        .attr('fill','#5f7884').style('font','700 15px Arial,sans-serif')
+        .text(function(d){return d.dataLbl;});
+
+      // model name + sub: start as the LEFT category list
+      groups.append('text').attr('class','cfm-name')
+        .attr('x',200).attr('y',function(d){return d.yRow-2;}).attr('text-anchor','end')
+        .attr('fill',function(d){return d.kind==='med'?'#41545d':'#6d2e2e';})
+        .style('font','700 16px Arial,sans-serif').text(function(d){return d.name;});
+      groups.append('text').attr('class','cfm-sub')
+        .attr('x',200).attr('y',function(d){return d.yRow+15;}).attr('text-anchor','end')
+        .attr('fill',function(d){return d.kind==='med'?'#798c93':'#ad5a61';})
+        .style('font','400 12px Arial,sans-serif').attr('opacity',0.95)
+        .text(function(d){return d.sub;});
+
+      // ---- legend ----
+      var lg = svg.append('g').attr('transform','translate(220,676)');
+      var items = [['General / language FM','#b0413f'],['Medical & neuroimaging FM','#9cab92'],['Closed/estimated','#e6cdd1']];
+      var ox = 0;
+      items.forEach(function (it) {
+        lg.append('circle').attr('cx',ox).attr('cy',-4).attr('r',7).attr('fill',it[1])
+          .attr('stroke',it[1]==='#e6cdd1'?'#c4737b':'none').attr('stroke-dasharray',it[1]==='#e6cdd1'?'3,2':null);
+        lg.append('text').attr('x',ox+14).attr('y',1).attr('fill','#6f827f')
+          .style('font','700 14px Arial,sans-serif').text(it[0]);
+        ox += 30 + it[0].length*8.2;
+      });
+
+      built = true;
+    }
+
+    // Render the cumulative state for a target beat (idempotent, animated).
+    function render(beat, animate) {
+      if (!built) build();
+      curBeat = beat;
+      var T = animate ? 750 : 0;
+      var svg = d3.select('#cfm-svg');
+      var atNode = beat >= 1;          // names moved onto bubbles
+      var showYTitle = beat >= 2;      // y-axis title appears...
+      var rescaled = beat >= 2;        // ...together with the rescale, in one beat
+
+      svg.selectAll('.cfm-node').each(function (d) {
+        var g = d3.select(this);
+        var isData = d.params == null;
+        var rr = d.kind==='med' ? 14 : 18;
+        var cx = d.cx + (rescaled ? d.jx : 0);   // horizontal jitter only once bubbles cluster on the param axis
+        var cy = rescaled ? (isData ? 612 : yParam(d.params)) : d.yRow;
+
+        g.select('.cfm-bubble').transition().duration(T)
+          .attr('cx', cx).attr('cy', cy)
+          .attr('opacity', rescaled && isData ? 0.18 : 1);
+
+        // which side the label sits on (can swap once rescaled), and its anchor
+        var curSide = rescaled ? (d.rside || d.side) : d.side;
+        var right = curSide !== 'L';
+        var lblX = right ? cx + rr + 8 : cx - rr - 8;
+        var lblAnchor = right ? 'start' : 'end';
+
+        if (atNode) {
+          // name (line 1) + value (line 2) stacked beside the bubble, on the chosen side
+          g.select('.cfm-name').transition().duration(T)
+            .attr('x', lblX).attr('y', cy - 4 + d.ldy).attr('text-anchor', lblAnchor)
+            .attr('opacity', rescaled && isData ? 0.4 : 1);
+          g.select('.cfm-val').transition().duration(T)
+            .attr('x', lblX).attr('y', cy + 15 + d.ldy).attr('text-anchor', lblAnchor)
+            .attr('opacity', rescaled && isData ? 0.5 : 1)
+            .on('start', function () { d3.select(this).text(rescaled ? paramText(d) : d.dataLbl); });
+          g.select('.cfm-sub').transition().duration(T).attr('opacity', 0);
+        } else {
+          // beat 0: model names as the left category list, value to the right of the bubble
+          g.select('.cfm-name').transition().duration(T)
+            .attr('x', 200).attr('y', cy - 2).attr('text-anchor', 'end').attr('opacity', 1);
+          g.select('.cfm-sub').transition().duration(T)
+            .attr('x', 200).attr('y', cy + 15).attr('text-anchor', 'end').attr('opacity', 0.95);
+          g.select('.cfm-val').transition().duration(T)
+            .attr('x', right ? cx + rr + 6 : cx - rr - 6).attr('y', cy + 5)
+            .attr('text-anchor', right ? 'start' : 'end').attr('opacity', 1)
+            .on('start', function () { d3.select(this).text(d.dataLbl); });
+        }
+      });
+
+      // y-axis grid + title appear with the rescale / flash
+      svg.select('.cfm-yaxis').transition().duration(T).attr('opacity', rescaled ? 1 : 0);
+
+      var yt = svg.select('#cfm-ytitle');
+      if (beat === 2 && animate) {
+        // flash on first appearance
+        yt.interrupt().attr('opacity',0).attr('fill','#d33682')
+          .transition().duration(180).attr('opacity',1)
+          .transition().duration(220).attr('opacity',0.25)
+          .transition().duration(220).attr('opacity',1).attr('fill','#9c4347');
+      } else if (showYTitle) {
+        yt.interrupt().attr('fill','#9c4347').transition().duration(T).attr('opacity',1);
+      } else {
+        yt.interrupt().transition().duration(T).attr('opacity',0);
+      }
+    }
+
+    // ---- wire to reveal fragments ----
+    function syncFromDom() {
+      var slide = document.getElementById('cfm-slide');
+      if (!slide) return;
+      var shown = slide.querySelectorAll('.fragment.visible[data-cfm]').length;
+      render(shown, false);
+    }
+
+    if (window.Reveal) {
+      Reveal.on('ready', function () {
+        if (Reveal.getCurrentSlide() && Reveal.getCurrentSlide().id === 'cfm-slide') syncFromDom();
+        else { build(); render(0,false); }
+      });
+      Reveal.on('slidechanged', function (e) {
+        if (e.currentSlide && e.currentSlide.id === 'cfm-slide') syncFromDom();
+      });
+      Reveal.on('fragmentshown', function (e) {
+        var f = e.fragment; if (f && f.dataset && f.dataset.cfm) render(+f.dataset.cfm, true);
+      });
+      Reveal.on('fragmenthidden', function (e) {
+        var f = e.fragment; if (f && f.dataset && f.dataset.cfm) render(+f.dataset.cfm - 1, true);
+      });
+    }
+  })();
+  </script>
+
   <style type="text/css">
     /* Secondary, skippable description indented under a bold item header */
     .reveal .tagline { margin-left: 1.5em; margin-top: 0.15em; }
@@ -795,6 +1092,12 @@
     }
     .reveal .pillars-platform blockquote { margin: 0 auto 6px; }
     .reveal .pillars-arrows { position: absolute; left: 0; top: 0; width: 620px; height: 460px; pointer-events: none; }
+
+    /* ===== Slide: IOFL guided reveal (aggregator -> single node -> whole figure) ===== */
+    .reveal .iofl-stack { position: relative; display: inline-block; margin-top: -25px; line-height: 0; }
+    .reveal .iofl-stack img { height: 600px; max-width: 100%; border: 0; box-shadow: none; background: none; display: block; }
+    .reveal .iofl-base { opacity: 0.18; }            /* dim full-figure backdrop */
+    .reveal .iofl-layer { position: absolute; top: 0; left: 0; }
 
     /* 1. Style header/footer <div> so they are positioned as desired. */
     #header-left {
