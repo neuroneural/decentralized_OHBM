@@ -399,24 +399,86 @@
         </aside>
       </section>
 
-      <!-- 4. Analysis vs learning -->
+      <!-- 4. Cross-cutting axes: analysis/learning + privacy -->
       <section>
-        <h2>Federated Analysis vs Federated Learning</h2>
-        <div style="display:flex; justify-content:space-around; margin-top:40px;">
-          <div>
-            <h3>Analysis</h3>
-            <p>stats / normative / ICA / VBM</p>
+        <div class="xax-wrap">
+          <div class="xax-head">
+            <h2 class="xax-title">Affecting all 3 categories</h2>
+            <div class="xax-legend">
+              <span class="xax-dot" style="background:#1f6fb2"></span>methods
+              <span class="xax-dot" style="background:#d08a1e"></span>frameworks
+              <span class="xax-dot" style="background:#4a9e5a"></span>platforms
+            </div>
           </div>
-          <div>
-            <h3>Learning</h3>
-            <p>train ML / deep nets</p>
+          <p class="xax-sub">two axes that cut across every layer</p>
+
+          <div class="xax-cols">
+
+            <!-- LEFT: analysis vs learning -->
+            <div class="xax-col">
+              <div class="fragment fade-in" data-fragment-index="1">
+                <p class="xax-ch">Analysis vs Learning</p>
+                <p class="xax-cs">methods vs models</p>
+              </div>
+              <svg class="xax-axis" viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg">
+                <g class="fragment fade-in" data-fragment-index="2">
+                  <text x="6" y="20" font-family="Arial" font-size="11" font-weight="700" fill="#41545d">ANALYSIS</text>
+                  <rect x="6" y="26" width="308" height="20" rx="6" fill="rgba(110,135,146,0.18)" stroke="#8aa0a8" stroke-width="1"></rect>
+                  <text x="14" y="40" font-family="Arial" font-size="10" fill="#586e75">single&#8209;shot &middot; VBM, GLM</text>
+                  <text x="306" y="40" text-anchor="end" font-family="Arial" font-size="10" fill="#586e75">iterative &middot; ICA, dFNC</text>
+                </g>
+                <g class="fragment fade-in" data-fragment-index="3">
+                  <text x="6" y="76" font-family="Arial" font-size="11" font-weight="700" fill="#41545d">LEARNING</text>
+                  <rect x="150" y="82" width="164" height="20" rx="6" fill="rgba(31,111,178,0.16)" stroke="#1f6fb2" stroke-width="1"></rect>
+                  <text x="306" y="96" text-anchor="end" font-family="Arial" font-size="10" fill="#1f6fb2">FedAvg &middot; FedSGD &middot; deep nets</text>
+                </g>
+                <g class="fragment fade-in" data-fragment-index="4">
+                  <line x1="6" y1="120" x2="314" y2="120" stroke="#c3cbc7" stroke-width="1.5"></line>
+                  <text x="6" y="138" font-family="Arial" font-size="10.5" fill="#7d8f95">single&#8209;shot</text>
+                  <text x="314" y="138" text-anchor="end" font-family="Arial" font-size="10.5" fill="#7d8f95">multi&#8209;shot &middot; iterative rounds</text>
+                </g>
+              </svg>
+              <p class="xax-note fragment fade-in" data-fragment-index="5">Analysis shares statistics about the data; learning trains a shared model.</p>
+            </div>
+
+            <!-- RIGHT: privacy levels -->
+            <div class="xax-col">
+              <div class="fragment fade-in" data-fragment-index="6">
+                <p class="xax-ch">Privacy</p>
+                <p class="xax-cs">plausible vs guaranteed</p>
+              </div>
+              <div class="xax-tiers">
+                <div class="xax-tier t-green fragment fade-in" data-fragment-index="7">
+                  <p class="xax-tt">Plausibly private <span class="xax-tt-tag">&middot; default</span></p>
+                  <p class="xax-td">No raw data leaves a site, but no formal guarantees.</p>
+                </div>
+                <div class="xax-tier t-amber fragment fade-in" data-fragment-index="8">
+                  <p class="xax-tt">Differential privacy</p>
+                  <p class="xax-td">calibrated noise &rarr; every category must track an &epsilon; privacy budget.</p>
+                </div>
+                <div class="xax-tier t-red fragment fade-in" data-fragment-index="9">
+                  <p class="xax-tt">Encryption &middot; HE / SMPC</p>
+                  <p class="xax-td">cryptographic guarantee &rarr; heavy compute &amp; communication cost.</p>
+                </div>
+              </div>
+              <div class="xax-trade fragment fade-in" data-fragment-index="10">
+                <span>weaker guarantee</span><span class="xax-trade-line"></span><span>higher cost</span>
+              </div>
+            </div>
+
           </div>
         </div>
+
         <aside class="notes">
-          A second axis that cuts across all three categories.
-          Analysis: exchange sufficient statistics (GLM, VBM, ICA/dFNC, normative models).
-          Learning: iterative parameter/gradient exchange (FedAvg variants, Fed-BioMed).
-          COINSTAC/NeuroFLAME support BOTH workloads -- one reason they're special.
+          Two orthogonal axes that cut across all three categories (methods, frameworks, platforms).
+          LEFT - Analysis vs Learning (methods vs models): analysis shares statistics/sufficient
+          stats (VBM, GLM single-shot; ICA, dFNC iterative); learning trains a shared model and is
+          almost always multi-shot (FedAvg, FedSGD, deep nets). Both can be light or communication-
+          heavy - the single-shot/multi-shot axis is a spectrum, explained verbally.
+          RIGHT - Privacy: plausibly private by default (only derivatives leave a site, no formal
+          guarantee); differential privacy adds calibrated noise but forces an epsilon budget across
+          every category; HE/SMPC give cryptographic guarantees at heavy compute/comms cost.
+          COINSTAC/NeuroFLAME support both workloads and multiple privacy levels.
         </aside>
       </section>
 
@@ -1501,6 +1563,48 @@
     }
     .reveal .pillars-platform .plat-list .plat-url:hover { text-decoration: underline; opacity: 1; }
     .reveal .pillars-arrows { position: absolute; left: 0; top: 0; width: 620px; height: 500px; pointer-events: none; }
+
+    /* ===== Slide: cross-cutting axes (analysis/learning + privacy) ===== */
+    .reveal .xax-wrap { text-align: left; max-width: 900px; margin: 0 auto; }
+    .reveal .xax-head { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+    .reveal .xax-title {
+      margin: 0; font-size: 1.5em; line-height: 1;
+      font-family: "League Gothic", Impact, sans-serif; text-transform: uppercase; color: #586e75;
+    }
+    .reveal .xax-legend {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.34em; letter-spacing: .5px; text-transform: uppercase; color: #93a0a6;
+    }
+    .reveal .xax-dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+    .reveal .xax-sub { margin: 4px 0 0; font-size: 0.42em; font-style: italic; color: #7d8f95; }
+
+    .reveal .xax-cols { display: flex; gap: 44px; margin-top: 26px; }
+    .reveal .xax-col { flex: 1 1 0; min-width: 0; }
+    .reveal .xax-ch {
+      margin: 0; font-size: 1.0em; line-height: 1;
+      font-family: "League Gothic", Impact, sans-serif; text-transform: uppercase; color: #586e75;
+      border-bottom: 2px solid #b9c4bf; padding-bottom: 5px;
+    }
+    .reveal .xax-cs { margin: 5px 0 16px; font-size: 0.38em; font-style: italic; color: #7d8f95; }
+    .reveal .xax-axis { width: 100%; height: auto; display: block; }
+    .reveal .xax-note { margin: 12px 0 0; font-size: 0.4em; line-height: 1.5; color: #586e75; }
+
+    .reveal .xax-tiers { display: flex; flex-direction: column; gap: 9px; }
+    .reveal .xax-tier { padding: 8px 13px; border-left: 5px solid #6e8792; }
+    .reveal .xax-tier.t-green { border-color: #4a9e5a; background: rgba(74,158,90,0.10); }
+    .reveal .xax-tier.t-amber { border-color: #d08a1e; background: rgba(208,138,30,0.11); }
+    .reveal .xax-tier.t-red   { border-color: #c0492f; background: rgba(192,73,47,0.10); }
+    .reveal .xax-tt { margin: 0; font-size: 0.44em; font-weight: 600; line-height: 1.2; }
+    .reveal .xax-tier.t-green .xax-tt { color: #33623e; }
+    .reveal .xax-tier.t-amber .xax-tt { color: #8a5a12; }
+    .reveal .xax-tier.t-red .xax-tt   { color: #8f3522; }
+    .reveal .xax-tt-tag { font-weight: 400; color: #93a0a6; }
+    .reveal .xax-td { margin: 3px 0 0; font-size: 0.38em; line-height: 1.4; color: #586e75; }
+    .reveal .xax-trade {
+      display: flex; align-items: center; gap: 9px; margin-top: 11px;
+      font-size: 0.33em; letter-spacing: .3px; color: #93a0a6;
+    }
+    .reveal .xax-trade-line { flex: 1; height: 1px; background: #cfc7b3; }
 
     /* ===== Slide: IOFL guided reveal (aggregator -> single node -> whole figure) ===== */
     .reveal .iofl-stack { position: relative; display: inline-block; margin-top: -25px; line-height: 0; }
