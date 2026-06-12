@@ -542,7 +542,7 @@
 
       <!-- 10. Inside-Out Federated Learning (real League Gothic header + figure beneath) -->
       <section data-cat="1">
-        <h2>Inside-Out Federated Learning (IOFL)</h2>
+        <h2>Inside-Out Federated Learning</h2>
         <!-- guided 3-beat reveal: aggregator -> single node -> whole figure,
              via clip-path on aligned copies over a dimmed backdrop -->
         <div class="iofl-stack">
@@ -1143,17 +1143,21 @@
     .reveal .tagline { margin-left: 1.5em; margin-top: 0.15em; }
 
     /* ===== Category cue: persistent 3-step taxonomy mini-map (top-right, below logo) ===== */
+    /* anchored inside the slide content, so top/right are measured from the title's box:
+       top ~= aligned with the title's top; right:6 = hugging the right edge. */
     .reveal section[data-cat] .cat-cue {
-      position: absolute; top: 86px; right: 10px; z-index: 40;
-      display: flex; flex-direction: column; gap: 5px; align-items: flex-end;
+      position: absolute; top: 14px; right: 6px; z-index: 40;
+      display: flex; flex-direction: column; gap: 4px; align-items: flex-end;
       font-family: 'Arial Narrow', Arial, sans-serif; pointer-events: none; user-select: none;
     }
-    .cat-cue .cat-step { display: flex; align-items: center; gap: 7px; opacity: 0.55; }
-    .cat-cue .cat-lbl  { font-size: 15px; letter-spacing: 0.3px; color: #a7a08d; }
+    /* reserve a right-hand column on these slides so long titles never run under the map */
+    .reveal section[data-cat] > h2 { padding-right: 150px; box-sizing: border-box; }
+    .cat-cue .cat-step { display: flex; align-items: center; gap: 6px; opacity: 0.55; }
+    .cat-cue .cat-lbl  { font-size: 13px; letter-spacing: 0.2px; color: #a7a08d; }
     .cat-cue .cat-num  {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 22px; height: 22px; border-radius: 50%; border: 1.6px solid #cfc7b3;
-      font-size: 13px; font-weight: 700; color: #a7a08d; background: rgba(253,246,227,0.65);
+      width: 19px; height: 19px; border-radius: 50%; border: 1.5px solid #cfc7b3;
+      font-size: 12px; font-weight: 700; color: #a7a08d; background: rgba(253,246,227,0.65);
     }
     /* active step (keyed to the section's category) */
     .cat-cue[data-cat="1"] .s1, .cat-cue[data-cat="2"] .s2, .cat-cue[data-cat="3"] .s3 { opacity: 1; }
