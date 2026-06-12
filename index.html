@@ -314,7 +314,8 @@
 
           <!-- LEFT: title sidebar -->
           <div class="pillars-title">
-            <h2>Pillars of Federated Neuroimaging</h2>
+            <h2>Pillars of<br>Federated<br>Neuroimaging</h2>
+            <p class="pillars-cat">Category&nbsp;<span class="pillars-cat-n">1</span></p>
           </div>
 
           <!-- RIGHT: V-structure figure -->
@@ -323,35 +324,64 @@
             <!-- two top pillars -->
             <div class="pillars-top">
               <!-- 1. Methods: appears first, centered, then shifts left -->
-              <div class="layer-box fragment fade-in" data-fragment-index="1">
-                <p class="lyr-title">1 &middot; Methods</p>
-                <blockquote>specific analyses &amp; models, made federated</blockquote>
-                <p class="lyr-eg">VBM &middot; ICA/dFNC &middot; brain age &middot; AD</p>
+              <div class="layer-box lyr-methods fragment fade-in" data-fragment-index="1">
+                <p class="lyr-title">Methods</p>
+                <p class="lyr-sub">specific analyses &amp; models, made federated</p>
+                <ul class="lyr-list">
+                  <li>Decentralized VBM</li>
+                  <li>Decentralized dFNC</li>
+                  <li>Decentralized ICA / IVA</li>
+                  <li>Federated brain&#8209;age</li>
+                  <li>AD / dementia classification</li>
+                  <li>Federated regression / GLM</li>
+                  <li>Privacy&#8209;preserving QC</li>
+                  <li>Private joint visualization</li>
+                  <li>DP fMRI source separation</li>
+                  <li>Sparse FL &mdash; SSFL, SalientGrads</li>
+                  <li>Encrypted ML &mdash; NeuroCrypt</li>
+                </ul>
+                <p class="lyr-brief">VBM &middot; dFNC &middot; ICA/IVA &middot; brain age &middot; AD &middot; GLM &middot; QC &middot; joint viz &middot; DP source sep &middot; sparse FL &middot; NeuroCrypt</p>
               </div>
               <!-- 2. Frameworks: collapsed until revealed, pushing Methods left -->
-              <div class="layer-box lyr-collapse fragment fade-in" data-fragment-index="2">
-                <p class="lyr-title">2 &middot; Frameworks</p>
-                <blockquote>reusable engines, FAIR &amp; harmonization plumbing</blockquote>
-                <p class="lyr-eg">Fed-BioMed &middot; Nipoppy &middot; Neurobagel &middot; NV FLARE</p>
+              <div class="layer-box lyr-frameworks lyr-collapse fragment fade-in" data-fragment-index="2">
+                <p class="lyr-title">Frameworks</p>
+                <p class="lyr-sub">reusable engines, FAIR &amp; harmonization plumbing</p>
+                <ul class="lyr-list">
+                  <li>NVIDIA&nbsp;FLARE</li>
+                  <li>Flower</li>
+                  <li>PySyft</li>
+                  <li>FATE</li>
+                  <li>OpenFL</li>
+                  <li>FedML</li>
+                  <li>TensorFlow Federated</li>
+                  <li>Fed&#8209;BioMed</li>
+                  <li>Vantage6 / PHT &middot; MetisFL</li>
+                  <li>Nipoppy &middot; Neurobagel (FAIR)</li>
+                </ul>
+                <p class="lyr-brief">NVFLARE &middot; Flower &middot; PySyft &middot; FATE &middot; OpenFL &middot; FedML &middot; TF Federated &middot; Fed&#8209;BioMed &middot; Vantage6 &middot; MetisFL &middot; Nipoppy &middot; Neurobagel</p>
               </div>
             </div>
 
             <!-- converging arrows (appear with platforms) -->
-            <svg class="pillars-arrows fragment fade-in" data-fragment-index="3" viewBox="0 0 620 460" xmlns="http://www.w3.org/2000/svg">
+            <svg class="pillars-arrows fragment fade-in" data-fragment-index="3" viewBox="0 0 620 500" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <marker id="varrow" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto">
-                  <path d="M0,0 L9,4.5 L0,9 Z" fill="#9cab92"></path>
+                <marker id="varrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="12" refY="6" orient="auto">
+                  <path d="M0,0 L12,6 L0,12 Z" fill="#9cab92"></path>
                 </marker>
               </defs>
-              <path d="M160,118 C200,210 250,250 300,300" fill="none" stroke="#9cab92" stroke-width="3" marker-end="url(#varrow)"></path>
-              <path d="M460,118 C420,210 370,250 320,300" fill="none" stroke="#9cab92" stroke-width="3" marker-end="url(#varrow)"></path>
+              <path d="M165,126 C190,235 250,300 286,330" fill="none" stroke="#9cab92" stroke-width="3" marker-end="url(#varrow)"></path>
+              <path d="M455,126 C430,235 370,300 334,330" fill="none" stroke="#9cab92" stroke-width="3" marker-end="url(#varrow)"></path>
             </svg>
 
             <!-- 3. Platforms: the layer the pillars feed -->
-            <div class="layer-box pillars-platform fragment fade-in" data-fragment-index="3">
-              <p class="lyr-title">3 &middot; Platforms</p>
-              <blockquote>turnkey systems that run vetted pipelines across sites</blockquote>
-              <p class="lyr-eg">COINSTAC &middot; NeuroFLAME</p>
+            <div class="layer-box pillars-platform lyr-platforms fragment fade-in" data-fragment-index="3">
+              <p class="lyr-title">Platforms</p>
+              <p class="lyr-sub">turnkey systems that run vetted pipelines across sites</p>
+              <ul class="lyr-list plat-list">
+                <li>COINSTAC&ensp;<a href="https://coinstac.org" target="_blank" rel="noopener" class="plat-url">coinstac.org</a></li>
+                <li>NeuroFLAME&ensp;<a href="https://neuroflame.org" target="_blank" rel="noopener" class="plat-url">neuroflame.org</a></li>
+                <li>FeTS&ensp;<a href="https://github.com/FeTS-AI" target="_blank" rel="noopener" class="plat-url">github.com/FeTS-AI</a></li>
+              </ul>
             </div>
 
           </div>
@@ -567,28 +597,52 @@
         </aside>
       </section>
 
-      <!-- 11. Final diagram + Brainchop north star -->
-      <section data-cat="3">
-        <h2>North Star: Zero-Install, Privacy-First UX</h2>
-        <div style="display:flex; justify-content:space-around; margin-top:40px;">
-          <div>
-            <h3>Brainchop</h3>
-            <p>local, in-browser, no install, data never leaves device</p>
+      <!-- 11. brainchop: the other way (full-bleed video background + QR) -->
+      <section class="bc-slide" data-cat="3"
+               data-background-video="figures/brainchop.mp4"
+               data-background-video-loop data-background-video-muted
+               data-background-size="cover">
+        <div class="bc-overlay">
+          <div class="bc-caption">
+            <div class="bc-title">Another way</div>
+            <div class="bc-tags">small models &middot; zero-footprint &middot; instant load</div>
           </div>
-          <div>
-            <h3>NeuroFLAME</h3>
-            <p>federated training &amp; analysis &mdash; almost this easy</p>
+          <div class="bc-qr">
+            <img src="figures/brainchop-qr-code.png" alt="brainchop.org QR code">
+            <span>brainchop.org</span>
           </div>
         </div>
-        <!-- TODO: final unified diagram - category x-axis, usability x privacy space, Brainchop in corner -->
         <aside class="notes">
-          Closing vision + unified diagram.
-          Brainchop = local, privacy-max, single-site, zero footprint (edge inference, not federated).
-          NeuroFLAME/COINSTAC = distributed, privacy-aware, multi-site.
-          20-second summary: three layers (methods / frameworks / platforms); within each,
-          federated analysis vs learning, under different privacy regimes. Most literature is in
-          Cat 1-2; our NeuroFLAME effort pushes Cat 3, plus sparse models & inside-out FL for the
-          foundation-model era.
+          Pause the methods thread -- show an alternative philosophy.
+          brainchop runs a small deep model entirely in the browser: zero-footprint install,
+          instant load, no IT department, no server. Data never leaves the device.
+          Extreme on usability and on privacy -- but single-site, edge inference.
+        </aside>
+      </section>
+
+      <!-- 12. NeuroFLAME video close: zero-footprint goal -> Thank you -->
+      <section class="bc-slide" data-cat="3"
+               data-background-video="figures/NeuroFLAME_demo_speeded.mp4"
+               data-background-video-loop data-background-video-muted
+               data-background-size="cover">
+        <div class="bc-overlay">
+          <h1 class="nf-thanks fragment fade-in" data-fragment-index="1">Thank you!</h1>
+          <div class="nf-caption fragment fade-out" data-fragment-index="1">
+            Federated neuroimaging should be zero-footprint
+          </div>
+          <div class="bc-qr nf-qr">
+            <img src="figures/neuroflame-qr-code.png" alt="neuroflame.org QR code">
+            <span>neuroflame.org</span>
+          </div>
+        </div>
+        <aside class="notes">
+          Smooth close, mirroring the brainchop video slide.
+          NeuroFLAME is fully federated (multi-site, privacy-preserving, differential privacy
+          on NV FLARE) -- the screen capture shows the GUI in action. The bar set by brainchop:
+          federated neuroimaging should be just as zero-footprint and frictionless.
+          On click, the closing statement crossfades into "Thank you!".
+          brainchop is local-only (no FL yet); NeuroFLAME has the federation and is pushing for
+          brainchop-level ease so neuroscientists skip infrastructure setup and specialist skills.
         </aside>
       </section>
     </section>
@@ -1138,6 +1192,84 @@
   })();
   </script>
 
+  <script>
+  /* Pillars slide: derive the active "frame" (1/2/3) from visible fragments,
+     drive the Category badge color/number and the compact (platform) state,
+     and draw the converging arrows from the actual box positions. */
+  (function () {
+    var VB = 620; /* svg viewBox width == fig layout width */
+
+    function drawArrows(fig) {
+      var svg = fig.querySelector('.pillars-arrows');
+      var m = fig.querySelector('.lyr-methods');
+      var f = fig.querySelector('.lyr-frameworks');
+      var p = fig.querySelector('.lyr-platforms');
+      if (!svg || !m || !f || !p) return;
+      var paths = svg.querySelectorAll('path[marker-end]');
+      if (paths.length < 2) return;
+      var fr = fig.getBoundingClientRect();
+      var scale = fr.width / VB || 1;
+      var rel = function (r) {
+        return {
+          cx: ((r.left + r.right) / 2 - fr.left) / scale,
+          bottom: (r.bottom - fr.top) / scale,
+          top: (r.top - fr.top) / scale,
+          left: (r.left - fr.left) / scale,
+          right: (r.right - fr.left) / scale
+        };
+      };
+      var M = rel(m.getBoundingClientRect());
+      var F = rel(f.getBoundingClientRect());
+      var P = rel(p.getBoundingClientRect());
+      var endY = P.top;                /* arrowhead tip rests on the platform top border */
+      var build = function (s, ex) {
+        var sy = s.bottom + 2;         /* start just below the box border */
+        var c1y = sy + (endY - sy) * 0.45;
+        var c2y = endY - (endY - sy) * 0.3;
+        return 'M' + s.cx.toFixed(1) + ',' + sy.toFixed(1) +
+               ' C' + s.cx.toFixed(1) + ',' + c1y.toFixed(1) +
+               ' ' + ex.toFixed(1) + ',' + c2y.toFixed(1) +
+               ' ' + ex.toFixed(1) + ',' + endY.toFixed(1);
+      };
+      paths[0].setAttribute('d', build(M, P.cx - 24));
+      paths[1].setAttribute('d', build(F, P.cx + 24));
+    }
+
+    function updatePillars() {
+      document.querySelectorAll('.reveal .pillars-wrap').forEach(function (wrap) {
+        var fig = wrap.querySelector('.pillars-fig');
+        if (!fig) return;
+        var methodsVisible = !!fig.querySelector('.lyr-methods.fragment.visible');
+        var platformVisible = !!fig.querySelector('.lyr-platforms.fragment.visible');
+        var frameworksVisible = !!fig.querySelector('.lyr-frameworks.fragment.visible');
+        var frame = platformVisible ? 3 : (frameworksVisible ? 2 : (methodsVisible ? 1 : 0));
+        wrap.setAttribute('data-frame', frame);
+        fig.classList.toggle('compact', frame === 3);
+        var n = wrap.querySelector('.pillars-cat-n');
+        if (n && frame > 0) n.textContent = frame;
+        if (frame === 3) {
+          requestAnimationFrame(function () { drawArrows(fig); });
+          setTimeout(function () { drawArrows(fig); }, 600); /* after collapse transition */
+        }
+      });
+    }
+    if (window.Reveal) {
+      var hook = function () {
+        updatePillars();
+        Reveal.on('fragmentshown', updatePillars);
+        Reveal.on('fragmenthidden', updatePillars);
+        Reveal.on('slidechanged', updatePillars);
+        Reveal.on('slidetransitionend', updatePillars);
+        Reveal.on('resize', updatePillars);
+      };
+      if (Reveal.isReady && Reveal.isReady()) hook();
+      else Reveal.on('ready', hook);
+    } else {
+      document.addEventListener('DOMContentLoaded', updatePillars);
+    }
+  })();
+  </script>
+
   <style type="text/css">
     /* Secondary, skippable description indented under a bold item header */
     .reveal .tagline { margin-left: 1.5em; margin-top: 0.15em; }
@@ -1253,32 +1385,57 @@
     }
 
     /* ===== Slide: Pillars of Federated Neuroimaging ===== */
+    /* Category accent colors (match the taxonomy mini-map / prior chart) */
     .reveal .pillars-wrap {
+      --c-methods: #1f6fb2;     /* blue   */
+      --c-frameworks: #d08a1e;  /* orange */
+      --c-platforms: #4a9e5a;   /* green  */
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       gap: 30px;
-      margin-top: 10px;
+      margin-top: 6px;
     }
-    .reveal .pillars-title { flex: 0 0 300px; width: 300px; text-align: left; }
-    .reveal .pillars-title h2 { margin: 0; font-size: 1.95em; line-height: 1.05; }
+    .reveal .pillars-title { flex: 0 0 300px; width: 300px; text-align: left; padding-top: 30px; }
+    .reveal .pillars-title h2 { margin: 0; font-size: 1.7em; line-height: 1.02; word-break: keep-all; hyphens: none; }
+    .reveal .pillars-cat {
+      margin: 28px 0 0; font-size: 0.72em; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #93a0a6; font-weight: 700;
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0; transition: opacity .3s ease;
+    }
+    /* Category label appears only once its matching box is on screen */
+    .reveal .pillars-wrap[data-frame="1"] .pillars-cat,
+    .reveal .pillars-wrap[data-frame="2"] .pillars-cat,
+    .reveal .pillars-wrap[data-frame="3"] .pillars-cat { opacity: 1; }
+    .reveal .pillars-cat .pillars-cat-n {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.5em; height: 1.5em; border-radius: 50%; color: #fff;
+      background: var(--c-methods); transition: background .4s ease; font-weight: 700;
+    }
+    .reveal .pillars-wrap[data-frame="2"] .pillars-cat-n { background: var(--c-frameworks); }
+    .reveal .pillars-wrap[data-frame="3"] .pillars-cat-n { background: var(--c-platforms); }
 
-    .reveal .pillars-fig { position: relative; flex: 0 0 620px; width: 620px; height: 460px; }
-    .reveal .pillars-top { display: flex; justify-content: center; gap: 40px; }
+    .reveal .pillars-fig { position: relative; flex: 0 0 620px; width: 620px; height: 500px; }
+    .reveal .pillars-top { display: flex; justify-content: center; align-items: flex-start; gap: 40px; }
 
     .reveal .layer-box {
       flex: 1 1 0;
-      max-width: 280px;
+      max-width: 285px;
       min-height: 96px;
       box-sizing: border-box;
-      border: 2px solid #6e8792;
+      border: 2px solid var(--ac, #6e8792);
       border-radius: 12px;
-      background: rgba(110, 135, 146, 0.10);
+      background: var(--ac-bg, rgba(110, 135, 146, 0.08));
       padding: 12px 16px;
       text-align: left;
       transition: max-width .55s ease, flex-basis .55s ease, flex-grow .55s ease,
                   padding .55s ease, border-width .55s ease, opacity .5s ease;
     }
+    .reveal .layer-box.lyr-methods    { --ac: var(--c-methods);    --ac-bg: rgba(31,111,178,0.07); }
+    .reveal .layer-box.lyr-frameworks { --ac: var(--c-frameworks); --ac-bg: rgba(208,138,30,0.08); }
+    .reveal .layer-box.lyr-platforms  { --ac: var(--c-platforms);  --ac-bg: rgba(74,158,90,0.09); }
+
     /* Frameworks collapses to keep Methods centered until it is revealed */
     .reveal .layer-box.lyr-collapse.fragment:not(.visible) {
       flex-grow: 0 !important;
@@ -1293,29 +1450,57 @@
     .reveal .layer-box .lyr-title {
       font-family: "League Gothic", Impact, sans-serif;
       text-transform: uppercase;
-      color: #586e75;
-      font-size: 1.2em;
+      color: var(--ac, #586e75);
+      font-size: 1.25em;
       line-height: 1;
-      margin: 0 0 6px;
+      margin: 0 0 5px;
+      border-bottom: 2px solid var(--ac, #6e8792);
+      padding-bottom: 4px;
     }
-    .reveal .layer-box blockquote {
-      width: 100%;
-      margin: 0 0 6px;
-      padding: 4px 9px;
-      font-size: 0.42em;
-      line-height: 1.22;
+    .reveal .layer-box .lyr-sub {
+      font-size: 0.34em; color: #7d8f95; line-height: 1.2; margin: 0 0 7px; font-style: italic;
     }
-    .reveal .layer-box .lyr-eg { font-size: 0.34em; color: #7d8f95; line-height: 1.2; margin: 0; }
+    .reveal .layer-box .lyr-list {
+      list-style: none; margin: 0; padding: 0;
+      font-size: 0.36em; line-height: 1.5; color: #586e75;
+    }
+    .reveal .layer-box .lyr-list li {
+      margin: 0; padding-left: 14px; position: relative;
+    }
+    .reveal .layer-box .lyr-list li::before {
+      content: ""; position: absolute; left: 0; top: 0.55em;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--ac, #6e8792);
+    }
+    /* shorthand summary, hidden until the compact (frame-3) state */
+    .reveal .layer-box .lyr-brief { display: none; font-size: 0.36em; color: #7d8f95; line-height: 1.25; margin: 0; }
+    .reveal .layer-box .lyr-eg { font-size: 0.4em; color: #586e75; line-height: 1.3; margin: 0; font-weight: 600; }
+
+    /* ---- Compact (frame 3): top cards shrink to shorthand, feed the platform ---- */
+    .reveal .pillars-fig.compact .pillars-top { align-items: stretch; }
+    .reveal .pillars-fig.compact .pillars-top .lyr-list { display: none; }
+    .reveal .pillars-fig.compact .pillars-top .lyr-sub  { display: none; }
+    .reveal .pillars-fig.compact .pillars-top .lyr-brief { display: block; }
+    .reveal .pillars-fig.compact .pillars-top .layer-box {
+      min-height: 0; max-width: 250px; align-self: stretch;
+    }
 
     /* Platforms anchored bottom-center; arrows overlay the figure */
     .reveal .pillars-platform {
       position: absolute;
-      left: 140px; top: 318px;
-      width: 340px; max-width: 340px;
+      left: 150px; top: 330px;
+      width: 320px; max-width: 320px;
       text-align: center;
     }
-    .reveal .pillars-platform blockquote { margin: 0 auto 6px; }
-    .reveal .pillars-arrows { position: absolute; left: 0; top: 0; width: 620px; height: 460px; pointer-events: none; }
+    .reveal .pillars-platform .lyr-title { display: inline-block; }
+    .reveal .pillars-platform .lyr-sub { margin: 0 auto 8px; }
+    .reveal .pillars-platform .plat-list {
+      display: inline-block; text-align: left; font-size: 0.46em; line-height: 1.7;
+    }
+    .reveal .pillars-platform .plat-list .plat-url {
+      font-size: 0.8em; color: var(--c-platforms); text-decoration: none; opacity: 0.85;
+    }
+    .reveal .pillars-platform .plat-list .plat-url:hover { text-decoration: underline; opacity: 1; }
+    .reveal .pillars-arrows { position: absolute; left: 0; top: 0; width: 620px; height: 500px; pointer-events: none; }
 
     /* ===== Slide: IOFL guided reveal (aggregator -> single node -> whole figure) ===== */
     .reveal .iofl-stack { position: relative; display: inline-block; margin-top: -25px; line-height: 0; }
@@ -1340,6 +1525,48 @@
       position: absolute;
       bottom: 0%;
       left: 0%;
+    }
+
+    /* --- brainchop video slide: fill the slide so corners anchor reliably --- */
+    .reveal section.bc-slide { top: 0 !important; height: 100% !important; }
+    .reveal .bc-overlay { position: absolute; inset: 0; z-index: 5; }
+    .reveal .bc-caption {
+      position: absolute; top: 6%; left: 3.5%; text-align: left; color: #fff;
+      background: rgba(0,0,0,.42); padding: 16px 26px; border-radius: 12px;
+      -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+    }
+    .reveal .bc-caption .bc-title {
+      font-family: "League Gothic", Impact, sans-serif;
+      text-transform: uppercase; font-weight: normal; letter-spacing: normal;
+      font-size: 88px; line-height: 1;
+    }
+    .reveal .bc-caption .bc-tags  { font-size: 26px; margin-top: 10px; opacity: .92; }
+    .reveal .bc-qr {
+      position: absolute; bottom: 5%; left: 3.5%;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .reveal .bc-qr img { height: 160px; width: 160px; border: 6px solid #fff; border-radius: 8px; box-shadow: 0 4px 18px rgba(0,0,0,.5); background:#fff; }
+    .reveal .bc-qr span { font-size: 26px; font-weight: 700; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.9); }
+
+    /* --- NeuroFLAME video close slide (mirrors brainchop treatment) --- */
+    .reveal .nf-caption {
+      position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%);
+      text-align: center; color: #fff; white-space: nowrap;
+      background: rgba(0,0,0,.45); padding: 16px 34px; border-radius: 12px;
+      font-size: 44px; font-weight: 700;
+      -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+    }
+    .reveal .nf-thanks {
+      position: absolute; top: 44%; left: 50%; transform: translate(-50%,-50%);
+      margin: 0; color: #fff; text-shadow: 0 4px 24px rgba(0,0,0,.85);
+      font-size: 150px; line-height: 1;
+    }
+    /* raise QR into empty lower-left zone so it clears the bottom title band;
+       dark pill on the label so it reads over the bright demo footage */
+    .reveal .nf-qr { bottom: 16%; left: 0%;}
+    .reveal .nf-qr span {
+      background: rgba(0,0,0,.45); padding: 3px 12px; border-radius: 8px;
+      -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
     }
   </style>
 
