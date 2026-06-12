@@ -463,24 +463,6 @@
         </aside>
       </section>
 
-      <!-- 9. Sparse / communication-efficient FL -->
-      <section>
-        <h2>Sparse Federated Models for Neuroimaging</h2>
-        <ul>
-          <li class="fragment">Foundation models are huge</li>
-          <li class="fragment">Bandwidth is limited</li>
-          <li class="fragment">Exchange only a few % of weights &mdash; same performance</li>
-        </ul>
-        <!-- TODO: TMLR results figure -->
-        <aside class="notes">
-          Future: communication-efficient FL.
-          Big models + FL = communication bottleneck; naive FL of giant models is not viable
-          over hospital networks.
-          Our TMLR work: sparse models / sparse updates, tiny fraction of weights exchanged,
-          accuracy preserved. Add the results figure here.
-        </aside>
-      </section>
-
       <!-- 9a. Challenges of Federating Models (animated d3 rebuild of the "hungry" chart) -->
       <section id="cfm-slide">
         <h2>Challenges of Federating Models</h2>
@@ -510,8 +492,41 @@
         </aside>
       </section>
 
+      <!-- 9. Sparse Federated Models (answers the "models are huge" challenge; bullets left, hero result right) -->
+      <section data-cat="1">
+        <h2>Sparse Federated Models</h2>
+        <div class="sfm-cols">
+          <div class="sfm-left">
+            <ul>
+              <li class="fragment">Huge models &rarr; impossible bandwidth</li>
+              <li class="fragment">Federate only a <strong>sparse subnetwork</strong></li>
+              <li class="fragment" data-sfm="50"><strong>50%</strong> sparse: matches dense</li>
+              <li class="fragment" data-sfm="90"><strong>90%</strong> sparse: <strong>10&times;</strong> less comms, &lt;10% drop</li>
+              <li class="fragment sfm-punch">Foundation-scale FL becomes feasible</li>
+            </ul>
+          </div>
+          <div class="sfm-right">
+            <svg id="sfm-svg" viewBox="0 0 780 600" style="width:100%; height:auto; max-height:560px; background:none;"></svg>
+            <div class="sfm-cap">Gender classification, ABCD MRI (21 sites)</div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          Method: [<a href="https://openreview.net/forum?id=kUZ6LhUB26" target="_blank" rel="noopener noreferrer">Ohib, Thapaliya, Dziugaite, Liu, Calhoun &amp; Plis &mdash; SSFL, TMLR 2025</a>]
+        </div>
+        <aside class="notes">
+          This is the payoff to the previous slide: models are huge and hospitals won't centralize,
+          so the bottleneck is communication. Sparse federated learning answers it directly &mdash; we
+          federate only a sparse subnetwork, exchanging a few percent of the weights. Up to 50%
+          sparsity matches or beats the dense baselines; at 90% sparsity we cut communication 10x
+          with under a 10% accuracy drop. The "Ours" curve stays flat while every other sparse
+          method collapses. That's what makes federating foundation-scale models realistic on
+          hospital networks &mdash; the future direction this talk is pointing toward.
+          (Result shown on ABCD gender classification across 21 sites; method = SSFL, TMLR 2025.)
+        </aside>
+      </section>
+
       <!-- 9b. Federated Foundation Encoders (League Gothic header + figure; guided 2-beat reveal) -->
-      <section>
+      <section data-cat="1">
         <h2>Federated Foundation Encoders</h2>
         <img src="figures/foundation_single_node.svg" alt="Federated foundation encoders: a single node"
              style="border:0; box-shadow:none; background:none; width:92%; max-width:1000px; height:auto; margin-top:10px;">
@@ -526,7 +541,7 @@
       </section>
 
       <!-- 10. Inside-Out Federated Learning (real League Gothic header + figure beneath) -->
-      <section>
+      <section data-cat="1">
         <h2>Inside-Out Federated Learning (IOFL)</h2>
         <!-- guided 3-beat reveal: aggregator -> single node -> whole figure,
              via clip-path on aligned copies over a dimmed backdrop -->
@@ -553,7 +568,7 @@
       </section>
 
       <!-- 11. Final diagram + Brainchop north star -->
-      <section>
+      <section data-cat="3">
         <h2>North Star: Zero-Install, Privacy-First UX</h2>
         <div style="display:flex; justify-content:space-around; margin-top:40px;">
           <div>
@@ -950,9 +965,212 @@
   })();
   </script>
 
+  <!-- ===== Sparse Federated Models: inline result chart + node pulse on bullet reveal ===== -->
+  <script>
+  (function () {
+    var SP = [0, 50, 80, 90, 95];
+    var SERIES = [
+      {key:'dispfl', name:'DisPFL',              y:[85.2,80.0,76.0,74.0,62.0], c:'#e0892e'},
+      {key:'snip',   name:'Individual SNIP',     y:[91.5,80.0,52.5,51.0,53.0], c:'#4a9e5a'},
+      {key:'randm',  name:'Global Random Mask',  y:[90.5,89.2,84.5,71.3,47.5], c:'#b0413f'},
+      {key:'ours',   name:'Ours (sparse FL)',    y:[92.7,92.7,88.2,87.5,71.2], c:'#1f6fb2', hero:true}
+    ];
+    var FEDAVG_FT = 92.0, FEDAVG = 91.0;
+    var BG='#fdf6e3', TXT='#41545d', GRID='#d9cfb8';
+
+    // plot geometry
+    var L=64, R=18, Tp=22, B=58, W=780, H=600;
+    function x(v){ return L + v/98 * (W-L-R); }
+    function y(v){ return (H-B) - (v-44)/(99-44) * (H-B-Tp); }
+
+    var built = false;
+    function build() {
+      var svg = d3.select('#sfm-svg'); if (svg.empty()) return;
+      svg.selectAll('*').remove();
+
+      // gridlines + axes
+      [50,60,70,80,90].forEach(function (v) {
+        svg.append('line').attr('x1',L).attr('x2',W-R).attr('y1',y(v)).attr('y2',y(v))
+          .attr('stroke',GRID).attr('stroke-width',1);
+        svg.append('text').attr('x',L-8).attr('y',y(v)+5).attr('text-anchor','end')
+          .attr('fill',TXT).style('font','400 15px Arial,sans-serif').text(v);
+      });
+      [0,20,40,60,80].forEach(function (v) {
+        svg.append('text').attr('x',x(v)).attr('y',H-B+24).attr('text-anchor','middle')
+          .attr('fill',TXT).style('font','400 15px Arial,sans-serif').text(v);
+      });
+      svg.append('line').attr('x1',L).attr('x2',W-R).attr('y1',H-B).attr('y2',H-B).attr('stroke',GRID).attr('stroke-width',1.4);
+      svg.append('line').attr('x1',L).attr('x2',L).attr('y1',Tp).attr('y2',H-B).attr('stroke',GRID).attr('stroke-width',1.4);
+      svg.append('text').attr('x',(L+W-R)/2).attr('y',H-14).attr('text-anchor','middle')
+        .attr('fill',TXT).style('font','400 16px Arial,sans-serif').text('Sparsity (%)  →  fewer weights exchanged');
+      svg.append('text').attr('transform','translate(18,'+((Tp+H-B)/2)+') rotate(-90)').attr('text-anchor','middle')
+        .attr('fill',TXT).style('font','400 16px Arial,sans-serif').text('Accuracy (%)');
+
+      // dense baselines
+      [[FEDAVG_FT,'#8a8f93'],[FEDAVG,'#8a5fa0']].forEach(function (b) {
+        svg.append('line').attr('x1',L).attr('x2',W-R).attr('y1',y(b[0])).attr('y2',y(b[0]))
+          .attr('stroke',b[1]).attr('stroke-width',1.8).attr('stroke-dasharray','9,5').attr('opacity',0.9);
+      });
+
+      // series lines + nodes
+      SERIES.forEach(function (s) {
+        var pts = SP.map(function (sp,i){ return x(sp)+','+y(s.y[i]); }).join(' ');
+        svg.append('polyline').attr('points',pts).attr('fill','none')
+          .attr('stroke',s.c).attr('stroke-width',s.hero?4:2).attr('opacity',s.hero?1:0.78)
+          .attr('stroke-linejoin','round').attr('stroke-linecap','round');
+        SP.forEach(function (sp,i) {
+          var cx=x(sp), cy=y(s.y[i]), r=s.hero?7:5;
+          var node = svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',r)
+            .attr('fill',s.c).attr('opacity',s.hero?1:0.78);
+          if (s.hero) {
+            node.attr('stroke','white').attr('stroke-width',1.4)
+                .attr('data-cx',cx).attr('data-cy',cy).attr('data-r',r);
+            if (sp===50 || sp===90) node.attr('id','sfm-ours-'+sp);
+          }
+        });
+      });
+
+      // legend (lower-left, inside plot)
+      var lgItems = [
+        ['FedAvg-FT (dense)','#8a8f93','dash'],['FedAvg (dense)','#8a5fa0','dash'],
+        ['DisPFL','#e0892e','line'],['Individual SNIP','#4a9e5a','line'],
+        ['Global Random Mask','#b0413f','line'],['Ours (sparse FL)','#1f6fb2','line']
+      ];
+      var lx=L+16, ly=y(70)+6, lh=21;
+      svg.append('rect').attr('x',lx-10).attr('y',ly-16).attr('width',236).attr('height',lgItems.length*lh+14)
+        .attr('fill','#fbf1d8').attr('stroke',GRID).attr('rx',5).attr('opacity',0.92);
+      lgItems.forEach(function (it,i) {
+        var yy=ly+i*lh;
+        svg.append('line').attr('x1',lx).attr('x2',lx+26).attr('y1',yy).attr('y2',yy)
+          .attr('stroke',it[1]).attr('stroke-width',it[2]==='dash'?2:3)
+          .attr('stroke-dasharray',it[2]==='dash'?'7,4':null);
+        if (it[2]!=='dash') svg.append('circle').attr('cx',lx+13).attr('cy',yy).attr('r',4).attr('fill',it[1]);
+        svg.append('text').attr('x',lx+34).attr('y',yy+5).attr('fill',TXT)
+          .style('font','400 14px Arial,sans-serif').text(it[0]);
+      });
+      built = true;
+    }
+
+    // continuous splash / zoom pulse on the targeted "Ours" node — stays active until the bullet changes
+    var active = null;
+    function stopPulse() {
+      active = null;
+      var svg = d3.select('#sfm-svg'); if (svg.empty()) return;
+      svg.selectAll('.sfm-ripple').interrupt().remove();
+      svg.selectAll('circle[id^="sfm-ours-"]').each(function () {
+        var n = d3.select(this); n.interrupt().attr('r', +n.attr('data-r')).attr('cy', +n.attr('data-cy'));
+      });
+    }
+    function startPulse(sparsity) {
+      if (!built) build();
+      if (active === sparsity) return;          // already pulsing this node
+      stopPulse();
+      var n = d3.select('#sfm-ours-'+sparsity); if (n.empty()) return;
+      active = sparsity;
+      var cx=+n.attr('data-cx'), cy=+n.attr('data-cy'), r=+n.attr('data-r');
+      var svg = d3.select('#sfm-svg');
+      function ripple(){
+        if (active !== sparsity) return;
+        svg.append('circle').attr('class','sfm-ripple').attr('cx',cx).attr('cy',cy).attr('r',r)
+          .attr('fill','none').attr('stroke','#1f6fb2').attr('stroke-width',3).attr('opacity',0.7)
+          .transition().duration(950).ease(d3.easeCubicOut)
+          .attr('r',r+26).attr('opacity',0).attr('stroke-width',0.5).remove();
+      }
+      function beat(){
+        if (active !== sparsity) return;
+        ripple();
+        n.transition().duration(280).ease(d3.easeQuadOut).attr('r',r*1.85).attr('cy',cy-12)
+         .transition().duration(280).ease(d3.easeQuadIn).attr('r',r).attr('cy',cy)
+         .transition().delay(260).duration(0).on('end', beat);   // brief rest, then loop
+      }
+      beat();
+    }
+
+    // pulse the node for whichever data-sfm bullet is currently the latest revealed (or stop if none)
+    function syncPulse() {
+      var svg = document.getElementById('sfm-svg'); if (!svg) { stopPulse(); return; }
+      var slide = svg.closest('section');
+      var vis = slide ? slide.querySelectorAll('.fragment.visible') : [];
+      var last = vis.length ? vis[vis.length-1] : null;
+      if (last && last.dataset && last.dataset.sfm) startPulse(+last.dataset.sfm);
+      else stopPulse();
+    }
+
+    if (window.Reveal) {
+      Reveal.on('ready', function(){ if (document.getElementById('sfm-svg')) { build(); syncPulse(); } });
+      Reveal.on('slidechanged', function (e) {
+        if (e.currentSlide && e.currentSlide.querySelector && e.currentSlide.querySelector('#sfm-svg')) { build(); syncPulse(); }
+        else stopPulse();
+      });
+      Reveal.on('fragmentshown', function (e) {
+        if (e.fragment && e.fragment.closest('section') && e.fragment.closest('section').querySelector('#sfm-svg')) syncPulse();
+      });
+      Reveal.on('fragmenthidden', function (e) {
+        if (e.fragment && e.fragment.closest('section') && e.fragment.closest('section').querySelector('#sfm-svg')) syncPulse();
+      });
+    }
+  })();
+  </script>
+
+  <!-- ===== Category cue injector: adds the 3-step taxonomy map to every section[data-cat] ===== -->
+  <script>
+  (function () {
+    function injectCues() {
+      document.querySelectorAll('.reveal section[data-cat]').forEach(function (sec) {
+        if (sec.querySelector('.cat-cue')) return;
+        var cat = sec.getAttribute('data-cat');
+        var cue = document.createElement('div');
+        cue.className = 'cat-cue';
+        cue.setAttribute('data-cat', cat);
+        cue.innerHTML =
+          '<div class="cat-step s1"><span class="cat-lbl">Methods</span><span class="cat-num">1</span></div>' +
+          '<div class="cat-step s2"><span class="cat-lbl">Frameworks</span><span class="cat-num">2</span></div>' +
+          '<div class="cat-step s3"><span class="cat-lbl">Platforms</span><span class="cat-num">3</span></div>';
+        sec.appendChild(cue);
+      });
+    }
+    if (window.Reveal) {
+      if (Reveal.isReady && Reveal.isReady()) injectCues();
+      else Reveal.on('ready', injectCues);
+    } else {
+      document.addEventListener('DOMContentLoaded', injectCues);
+    }
+  })();
+  </script>
+
   <style type="text/css">
     /* Secondary, skippable description indented under a bold item header */
     .reveal .tagline { margin-left: 1.5em; margin-top: 0.15em; }
+
+    /* ===== Category cue: persistent 3-step taxonomy mini-map (top-right, below logo) ===== */
+    .reveal section[data-cat] .cat-cue {
+      position: absolute; top: 86px; right: 10px; z-index: 40;
+      display: flex; flex-direction: column; gap: 5px; align-items: flex-end;
+      font-family: 'Arial Narrow', Arial, sans-serif; pointer-events: none; user-select: none;
+    }
+    .cat-cue .cat-step { display: flex; align-items: center; gap: 7px; opacity: 0.55; }
+    .cat-cue .cat-lbl  { font-size: 15px; letter-spacing: 0.3px; color: #a7a08d; }
+    .cat-cue .cat-num  {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%; border: 1.6px solid #cfc7b3;
+      font-size: 13px; font-weight: 700; color: #a7a08d; background: rgba(253,246,227,0.65);
+    }
+    /* active step (keyed to the section's category) */
+    .cat-cue[data-cat="1"] .s1, .cat-cue[data-cat="2"] .s2, .cat-cue[data-cat="3"] .s3 { opacity: 1; }
+    .cat-cue[data-cat="1"] .s1 .cat-lbl { color: #1f6fb2; font-weight: 700; }
+    .cat-cue[data-cat="1"] .s1 .cat-num { background: #1f6fb2; border-color: #1f6fb2; color: #fff; }
+    .cat-cue[data-cat="3"] .s3 .cat-lbl { color: #4a9e5a; font-weight: 700; }
+    .cat-cue[data-cat="3"] .s3 .cat-num { background: #4a9e5a; border-color: #4a9e5a; color: #fff; }
+
+    /* ===== Slide: Sparse Federated Models (bullets left, hero result right) ===== */
+    .reveal .sfm-cols { display: flex; gap: 3%; align-items: center; margin-top: 6px; }
+    .reveal .sfm-left { flex: 0 0 40%; text-align: left; }
+    .reveal .sfm-left ul { list-style: none; margin: 0; }
+    .reveal .sfm-left li { font-size: 0.64em; line-height: 1.25; margin: 0.62em 0; }
+    .reveal .sfm-left .sfm-punch { color: #b0413f; font-weight: 700; margin-top: 0.8em; }
+    .reveal .sfm-right { flex: 1 1 57%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    .reveal .sfm-right svg { width: 100%; max-width: 600px; }
+    .reveal .sfm-cap { font-size: 0.5em; color: #798c93; font-style: italic; margin-top: 2px; }
 
     /* ===== Slide: Data Mining Approaches (three growing columns) ===== */
     .reveal .dm-cols {
