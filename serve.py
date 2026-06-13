@@ -8,6 +8,7 @@ Then open http://localhost:8000 once manually.
 """
 import http.server
 import os
+import re
 import sys
 import threading
 import time
@@ -126,7 +127,67 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(data)
             return
 
-        super().do_GET()
+        # Everything else (incl. video) goes through a Range-aware static server,
+        # so browsers can stream/seek instead of waiting on the whole file.
+        self._serve_static(path)
+
+    def _serve_static(self, path):
+        # Directory listings / redirects: let the stdlib handler deal with them.
+        if os.path.isdir(path) or not os.path.isfile(path):
+            return super().do_GET()
+
+        try:
+            fs = os.stat(path)
+        except OSError:
+            self.send_error(404, 'File not found')
+            return
+
+        size = fs.st_size
+        ctype = self.guess_type(path)
+        start, end, status = 0, size - 1, 200
+
+        rng = self.headers.get('Range')
+        if rng:
+            m = re.match(r'bytes=(\d*)-(\d*)\s*$', rng)
+            if m:
+                g1, g2 = m.group(1), m.group(2)
+                if g1 == '' and g2:                 # suffix: last N bytes
+                    start, end = max(0, size - int(g2)), size - 1
+                elif g1:
+                    start = int(g1)
+                    end = int(g2) if g2 else size - 1
+                if start > end or start >= size:
+                    self.send_response(416)
+                    self.send_header('Content-Range', f'bytes */{size}')
+                    self.end_headers()
+                    return
+                end = min(end, size - 1)
+                status = 206
+
+        length = end - start + 1
+        self.send_response(status)
+        self.send_header('Content-Type', ctype)
+        self.send_header('Accept-Ranges', 'bytes')
+        self.send_header('Content-Length', str(length))
+        if status == 206:
+            self.send_header('Content-Range', f'bytes {start}-{end}/{size}')
+        self.send_header('Cache-Control', 'no-store')
+        self.end_headers()
+
+        if self.command == 'HEAD':
+            return
+        with open(path, 'rb') as f:
+            f.seek(start)
+            remaining = length
+            while remaining > 0:
+                chunk = f.read(min(64 * 1024, remaining))
+                if not chunk:
+                    break
+                try:
+                    self.wfile.write(chunk)
+                except (BrokenPipeError, ConnectionResetError):
+                    break
+                remaining -= len(chunk)
 
     def log_message(self, fmt, *args):
         # suppress per-request noise; file changes are printed by watcher

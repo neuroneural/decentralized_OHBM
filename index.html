@@ -482,76 +482,139 @@
         </aside>
       </section>
 
-      <!-- 5. Where later talks land -->
-      <section>
-        <h2>Who Lives Where in This Landscape?</h2>
-        <ul>
-          <li class="fragment">Bayer &mdash; PCNtoolkit (federated normative models) &middot; Cat 1+2, analysis</li>
-          <li class="fragment">Wang &mdash; Nipoppy / Neurobagel / Fed-BioMed &middot; Cat 1+2, FL infra</li>
-          <li class="fragment">Lorenzi &mdash; Fed-BioMed, robustness, unlearning &middot; Cat 1+2, strong privacy</li>
-          <li class="fragment">COINSTAC / NeuroFLAME &middot; Cat 3</li>
-        </ul>
-        <aside class="notes">
-          Preview the session and place the speakers who follow me in the framework.
-          Say out loud who is mostly analysis vs learning, and roughly how strong the
-          privacy/guarantees are. Slide just shows markers + minimal labels.
-        </aside>
-      </section>
-
       <!-- 6. Category 1: methods & applications -->
       <section data-cat="1">
-        <h2>Category 1: Methods &amp; Applications</h2>
-        <div style="display:flex; justify-content:space-around; margin-top:40px;">
-          <div>
-            <h3>Classical analyses</h3>
-            <p>Federated VBM, ICA/dFNC, normative models</p>
+        <h2>Methods &amp; Applications</h2>
+        <p class="cs-sub">specific federated analyses &amp; models on neuroimaging data</p>
+
+        <div class="cs-cols">
+          <!-- LEFT: federated analysis (classical, shares statistics) -->
+          <div class="cs-col fragment fade-in">
+            <h3>Federated analysis</h3>
+            <p class="cs-ctag">classical pipelines &middot; share statistics, not models</p>
+            <ul class="cs-tags">
+              <li>Decentralized VBM</li>
+              <li>Decentralized dFNC</li>
+              <li>ICA / IVA &middot; Neuromark</li>
+              <li>Federated GLM / regression</li>
+              <li class="sessioned">Federated normative models
+                <span class="sess"><i class="fas fa-microphone"></i>Bayer</span></li>
+            </ul>
           </div>
-          <div>
-            <h3>ML / deep</h3>
-            <p>Brain age, AD prediction, reconstruction</p>
+          <!-- RIGHT: federated learning (trains shared models) -->
+          <div class="cs-col fragment fade-in">
+            <h3>Federated learning</h3>
+            <p class="cs-ctag">ML / deep &middot; train a shared model</p>
+            <ul class="cs-tags">
+              <li>Federated brain&#8209;age</li>
+              <li>AD / dementia classification</li>
+              <li>MRI reconstruction &amp; segmentation</li>
+              <li class="sessioned">Brain&#8209;age, cognitive decline, progression
+                <span class="sess"><i class="fas fa-microphone"></i>Wang</span></li>
+              <li class="sessioned">Robust optimization &amp; unlearning
+                <span class="sess"><i class="fas fa-microphone"></i>Lorenzi</span></li>
+            </ul>
           </div>
         </div>
-        <!-- TODO: illustration - federated vs centralized VBM map; brain-age MAE bar chart -->
+
+        <p class="cs-legend"><span class="sess"><i class="fas fa-microphone"></i></span> presented in this session</p>
+
         <aside class="notes">
-          The crowded space of papers: clever algorithms on structural MRI and fMRI,
-          both federated analysis and federated learning.
+          The crowded space of papers: clever algorithms on structural MRI and fMRI, on both the
+          federated-analysis side (VBM, dFNC, ICA/IVA, GLM) and the federated-learning side
+          (brain age, AD, reconstruction).
           Examples: Gazula et al. federated VBM/dFNC; Neuromark ICA in COINSTAC (~2000 adolescents);
           FLightcase brain-age in MS; Vantage6+PHT brain-age; MetisFL AD prediction.
-          Illustration idea: federated-vs-centralized statistical map overlap + "same or better" MAE bar.
+          Three of the talks after me live here: Bayer brings federated normative modelling
+          (an analysis-side method), while Wang's PD/AD experiments (brain age, cognitive decline,
+          progression) and Lorenzi's robustness/unlearning work are learning-side contributions.
+          Click to reveal each speaker chip as I name them.
         </aside>
       </section>
 
       <!-- 7. Category 2: frameworks & infrastructure -->
       <section data-cat="2">
-        <h2>Category 2: Frameworks &amp; Infrastructure</h2>
-        <div style="display:flex; justify-content:space-around; margin-top:40px;">
-          <div>Fed-BioMed</div>
-          <div>Nipoppy / Neurobagel</div>
-          <div>NV FLARE, Vantage6&hellip;</div>
+        <h2>Frameworks &amp; Infrastructure</h2>
+        <p class="cs-sub">reusable engines + FAIR / harmonization plumbing you wire together</p>
+
+        <div class="cs-cols">
+          <!-- LEFT: FL engines -->
+          <div class="cs-col fragment fade-in">
+            <h3>FL engines</h3>
+            <p class="cs-ctag">orchestration, communication &amp; security</p>
+            <ul class="cs-tags">
+              <li>NVIDIA FLARE</li>
+              <li>Flower &middot; PySyft &middot; FATE</li>
+              <li>OpenFL &middot; FedML &middot; TF Federated</li>
+              <li>Vantage6 / PHT &middot; MetisFL</li>
+              <li class="sessioned">Fed&#8209;BioMed
+                <span class="sess"><i class="fas fa-microphone"></i>Wang</span>
+                <span class="sess"><i class="fas fa-microphone"></i>Lorenzi</span></li>
+            </ul>
+          </div>
+          <!-- RIGHT: FAIR data, harmonization & toolkits -->
+          <div class="cs-col fragment fade-in">
+            <h3>FAIR data &amp; toolkits</h3>
+            <p class="cs-ctag">standardize, harmonize, discover &middot; make FL repeatable</p>
+            <ul class="cs-tags">
+              <li>BIDS &middot; analysis&#8209;ready derivatives</li>
+              <li class="sessioned">Nipoppy
+                <span class="sess"><i class="fas fa-microphone"></i>Wang</span></li>
+              <li class="sessioned">Neurobagel
+                <span class="sess"><i class="fas fa-microphone"></i>Wang</span></li>
+              <li class="sessioned">PCNtoolkit
+                <span class="sess"><i class="fas fa-microphone"></i>Bayer</span></li>
+            </ul>
+          </div>
         </div>
-        <p class="fragment" style="margin-top:40px;">Engines, FAIR workflows, harmonization</p>
-        <!-- TODO: illustration - stack cartoon: data -> Nipoppy -> Neurobagel -> Fed-BioMed -> model -->
+
+        <p class="cs-legend"><span class="sess"><i class="fas fa-microphone"></i></span> presented in this session</p>
+
         <aside class="notes">
-          The things you glue together: FL engines, FAIR data pipelines, harmonization/search.
+          The things you glue together: FL engines plus FAIR data pipelines and harmonization/search.
           Essential, but you still need serious engineering to get from here to a working study.
-          Stack cartoon: data -> Nipoppy -> Neurobagel -> Fed-BioMed -> model.
+          Wang and Lorenzi both build on Fed-BioMed as the FL engine; Wang adds the Nipoppy +
+          Neurobagel FAIR/harmonization layer; Bayer's PCNtoolkit is the normative-modelling toolkit
+          behind her federated site-effect correction.
+          Stack: data -> Nipoppy -> Neurobagel -> Fed-BioMed -> model.
         </aside>
       </section>
 
       <!-- 8. Category 3: platforms -->
       <section data-cat="3">
-        <h2>Category 3: Neuro Platforms</h2>
-        <div style="display:flex; justify-content:space-around; margin-top:40px;">
-          <div><h3>COINSTAC</h3></div>
-          <div><h3>NeuroFLAME</h3><p>on NV FLARE</p></div>
+        <h2>Neuro Platforms</h2>
+        <p class="cs-sub">turnkey, neuro&#8209;specific systems &mdash; run vetted pipelines, no infra to assemble</p>
+
+        <div class="cs-plats">
+          <div class="cs-plat">
+            <h3>COINSTAC</h3>
+            <p class="cs-pmeta">GUI &middot; vetted pipelines &middot; Vaults</p>
+            <a href="https://coinstac.org" target="_blank" rel="noopener" class="plat-url">coinstac.org</a><br>
+            <span class="sess me"><i class="fas fa-star"></i>this talk</span>
+          </div>
+          <div class="cs-plat">
+            <h3>NeuroFLAME</h3>
+            <p class="cs-pmeta">next&#8209;gen &middot; on NV FLARE &middot; differential privacy</p>
+            <a href="https://neuroflame.org" target="_blank" rel="noopener" class="plat-url">neuroflame.org</a><br>
+            <span class="sess me"><i class="fas fa-star"></i>this talk</span>
+          </div>
+          <div class="cs-plat ghost">
+            <h3>FeTS</h3>
+            <p class="cs-pmeta">federated tumor segmentation</p>
+            <a href="https://github.com/FeTS-AI" target="_blank" rel="noopener" class="plat-url">github.com/FeTS-AI</a>
+          </div>
         </div>
-        <p class="fragment" style="margin-top:40px;">GUI, vetted pipelines, Vaults, privacy-aware</p>
-        <!-- TODO: illustration - COINSTAC/NeuroFLAME GUI schematic; Vaults icon -->
+
+        <p class="cs-note fragment">Category 3 is <strong>under&#8209;served</strong>. We need much more activity in making our tools useful where it matters.</p>
+
         <aside class="notes">
           Here the end-user sees "run VBM" or "run ICA/dFNC" rather than "configure FedAvg on five sites".
           This category is NOT crowded -- this is where we spend most of our time.
           COINSTAC: first neuro-first decentralized analysis platform; Vaults = always-on datasets.
           NeuroFLAME: next gen, rebuilt on NV FLARE, modular, differential privacy.
+          FeTS is the other neuro-specific platform (tumor segmentation). brainchop is the local-first,
+          zero-footprint, in-browser experience we are chasing for NeuroFLAME -- I come back to it later.
+          The "this talk" chips mark the platforms I present today.
         </aside>
       </section>
 
@@ -1346,6 +1409,10 @@
     }
     /* reserve a right-hand column on these slides so long titles never run under the map */
     .reveal section[data-cat] > h2 { padding-right: 150px; box-sizing: border-box; }
+    /* tint each deep-dive title with its category accent (the category is already named by the map) */
+    .reveal section[data-cat="1"] > h2 { color: #1f6fb2; }
+    .reveal section[data-cat="2"] > h2 { color: #d08a1e; }
+    .reveal section[data-cat="3"] > h2 { color: #4a9e5a; }
     .cat-cue .cat-step { display: flex; align-items: center; gap: 6px; opacity: 0.55; }
     .cat-cue .cat-lbl  { font-size: 13px; letter-spacing: 0.2px; color: #a7a08d; }
     .cat-cue .cat-num  {
@@ -1361,6 +1428,51 @@
     .cat-cue[data-cat="2"] .s2 .cat-num { background: #d08a1e; border-color: #d08a1e; color: #fff; }
     .cat-cue[data-cat="3"] .s3 .cat-lbl { color: #4a9e5a; font-weight: 700; }
     .cat-cue[data-cat="3"] .s3 .cat-num { background: #4a9e5a; border-color: #4a9e5a; color: #fff; }
+
+    /* ===== Category deep-dive slides: grouped examples + "this session" speaker chips ===== */
+    .reveal .cs-sub { font-size: 0.5em; font-style: italic; color: #7d8f95; margin: 2px 0 0; text-align: center; }
+    .reveal .cs-legend { display: flex; justify-content: center; align-items: center; gap: 7px;
+      margin: 12px 0 0; font-size: 0.4em; color: #9aa0a0; letter-spacing: 0.2px; }
+
+    .reveal .cs-cols { display: flex; justify-content: center; gap: 6%; margin-top: 30px; text-align: left; }
+    .reveal .cs-col { flex: 1 1 0; max-width: 47%; }
+    .reveal .cs-col > h3 { font-size: 1.0em; margin: 0 0 2px; }
+    .reveal .cs-ctag { font-size: 0.38em; font-style: italic; color: #9aa0a0; margin: 0 0 16px; letter-spacing: 0.3px; }
+
+    .reveal .cs-tags { list-style: none; margin: 0; padding: 0; }
+    .reveal .cs-tags li { display: flex; align-items: center; flex-wrap: wrap; gap: 9px;
+      font-size: 0.52em; line-height: 1.2; margin: 0.52em 0; color: #41545d; }
+    .reveal .cs-tags li::before { content: ""; flex: 0 0 auto; width: 8px; height: 8px;
+      border-radius: 50%; background: #9cab92; }
+    .reveal section[data-cat="1"] .cs-tags li::before { background: #1f6fb2; }
+    .reveal section[data-cat="2"] .cs-tags li::before { background: #d08a1e; }
+    .reveal section[data-cat="3"] .cs-tags li::before { background: #4a9e5a; }
+    .reveal .cs-tags li.sessioned { font-weight: 600; }
+
+    /* "this session" chip (named speaker) */
+    .reveal .sess { display: inline-flex; align-items: center; gap: 5px;
+      background: #d33682; color: #fff; border-radius: 999px; padding: 2px 9px 2px 8px;
+      font-size: 0.8em; font-weight: 700; letter-spacing: 0.2px; white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.14); text-transform: none; }
+    .reveal .sess i { font-size: 0.82em; opacity: 0.95; }
+    .reveal .sess.me { background: #586e75; }            /* this talk (the opener) */
+    .reveal .cs-legend .sess { font-size: 1em; }
+
+    /* Category 3: platform cards (sparse, end-user layer) */
+    .reveal .cs-plats { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch;
+      gap: 16px; margin-top: 30px; }
+    .reveal .cs-plat { flex: 1 1 0; min-width: 0; max-width: 220px;
+      background: rgba(74,158,90,0.10); border: 1.5px solid #4a9e5a;
+      border-radius: 14px; padding: 14px 16px 16px; text-align: center; }
+    .reveal .cs-plat.ghost { background: rgba(110,135,146,0.06); border-color: #c3cbc7; }
+    .reveal .cs-plat h3 { font-size: 0.8em; margin: 0 0 5px; color: #3a7d47; }
+    .reveal .cs-plat.ghost h3 { color: #6e8792; }
+    .reveal .cs-plat .cs-pmeta { font-size: 0.34em; color: #7d8f95; font-style: italic;
+      margin: 0 0 9px; letter-spacing: 0.2px; line-height: 1.3; }
+    .reveal .cs-plat .plat-url { font-size: 0.32em; color: #268bd2; }
+    .reveal .cs-plat .sess { font-size: 0.4em; margin-top: 9px; }
+    .reveal .cs-note { font-size: 0.46em; color: #657b83; text-align: center; margin-top: 30px; }
+    .reveal .cs-note strong { color: #3a7d47; }
 
     /* ===== Slide: Sparse Federated Models (bullets left, hero result right) ===== */
     .reveal .sfm-cols { display: flex; gap: 3%; align-items: center; margin-top: 6px; }
