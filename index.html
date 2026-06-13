@@ -61,6 +61,11 @@
           <img style="border:0; box-shadow: none; margin: -10 20px;" height="80" src="figures/TReNDS_logo.svg" alt="TReNDS">
           <img style="border:0; box-shadow: none;" height="80" src="figures/neuroneural_logo.png" alt="Neuroneural">
         </p>
+        <!-- Follow-along QR, anchored to bottom-right; absolute so it doesn't shift the centered title -->
+        <div style="position:absolute; right:30px; bottom:25px; display:flex; flex-direction:column; align-items:center; opacity:0.9;">
+          <img style="border:0; box-shadow:none; width:120px; height:120px;" src="figures/slides-qr-code.svg" alt="QR code to slides">
+          <div style="font-size:16px; line-height:1.2; color:#5a6b73; margin-top:6px; max-width:140px; text-align:center;">Follow along on your own device</div>
+        </div>
       </section>
 
       <!-- 1. Data is the new oil (again) -->
@@ -756,8 +761,7 @@
                data-background-video-loop data-background-video-muted
                data-background-size="cover">
         <div class="bc-overlay">
-          <h1 class="nf-thanks fragment fade-in" data-fragment-index="1">Thank you!</h1>
-          <div class="nf-caption fragment fade-out" data-fragment-index="1">
+          <div class="nf-caption">
             Federated neuroimaging should be zero-footprint
           </div>
           <div class="bc-qr nf-qr">
@@ -776,6 +780,18 @@
           CALL TO ACTION: public release July 1, 2026; preprint already on bioRxiv
           (doi:10.64898/2026.04.30.721881). Try it / read it at neuroflame.org (QR on screen).
         </aside>
+      </section>
+
+      <!-- 13. Final close: backdrop only, no chrome -->
+      <section class="ty-slide" data-hide-chrome
+               data-background-image="figures/ohbm2026backdrop.png"
+               data-background-size="cover">
+        <div class="ty-qr">
+          <img src="figures/slides-qr-code-white.svg" alt="QR code to these slides">
+          <span>slides</span>
+        </div>
+        <div class="ty-thanks">Thank<br>you</div>
+        <aside class="notes">Final slide. Scan to grab the slides.</aside>
       </section>
     </section>
 </div>
@@ -1791,6 +1807,24 @@
       background: rgba(0,0,0,.45); padding: 3px 12px; border-radius: 8px;
       -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
     }
+
+    /* ===== Final "Thank you" slide: backdrop only, flanking the brain ===== */
+    .reveal section.ty-slide { top: 0 !important; height: 100% !important; }
+    .reveal .ty-qr {
+      position: absolute; left: 7%; top: 34%; transform: translateY(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .reveal .ty-qr img { width: 200px; height: 200px; border: 0; box-shadow: none; background: none; }
+    .reveal .ty-qr span { font-size: 36px; font-weight: 700; color: #fff; letter-spacing: .5px; }
+    .reveal .ty-thanks {
+      position: absolute; right: 7%; top: 34%; transform: translateY(-50%);
+      color: #fff; font-size: 72px; font-weight: 700; line-height: 1.05; text-align: center;
+    }
+
+    /* Hide the global header/footer logos while a no-chrome slide is active */
+    .reveal.hide-chrome #header-left,
+    .reveal.hide-chrome #header-right,
+    .reveal.hide-chrome #footer-left { display: none !important; }
   </style>
 
   <!-- // 2. Create hidden header/footer -->
@@ -1803,13 +1837,13 @@
       <div id="header-right">
         <img style="border:0; box-shadow: 0px 0px 0px
 			      rgba(150, 150, 255,0.8);" width="100" src="figures/TReNDS_brain.svg" alt="TReNDS">
-        <!-- <img style="border:0; box-shadow: 0px 0px 0px -->
-        <!--             rgba(150, 150, 255, 0.8);" -->
-        <!--      width="100" -->
-        <!--      src="figures/neuroneural_logo.png" -->
-        <!--      alt="Neuroneural"> -->
       </div>
       <div id="footer-left">
+        <img style="border:0; box-shadow: 0px 0px 0px
+                    rgba(150, 150, 255, 0.8); filter: invert(1);"
+             width="200"
+             src="figures/ohbm2026_logo.png"
+             alt="OHBM2026">
       </div>
     </div>
   </div>
@@ -1826,6 +1860,17 @@
     else {
       $('div.reveal').append(header);
     }
+
+    // Hide header/footer chrome on slides marked data-hide-chrome
+    (function () {
+      var reveal = document.querySelector('.reveal');
+      function syncChrome(slide) {
+        if (!slide) return;
+        reveal.classList.toggle('hide-chrome', slide.hasAttribute('data-hide-chrome'));
+      }
+      Reveal.on('ready', function (e) { syncChrome(e.currentSlide); });
+      Reveal.on('slidechanged', function (e) { syncChrome(e.currentSlide); });
+    })();
 
   </script>
 
